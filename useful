@@ -1,0 +1,95 @@
+from bin:
+cd ../../Build; make; cd ../Code/bin; ./BCGame
+
+count loc
+cd BearClaw; ( find ./ -name '*.cpp' -print0 | xargs -0 cat ) | wc -l; ( find ./ -name '*.h' -print0 | xargs -0 cat ) | wc -l; cd ../; cd Game;( find ./ -name '*.cpp' -print0 | xargs -0 cat ) | wc -l; ( find ./ -name '*.h' -print0 | xargs -0 cat ) | wc -l
+
+check all alphabet keys callback
+void KeyCallback(char button, Action_Type Type)
+{
+    if(Type == BC_PRESSED)
+    {
+        if(button == BC_KEY_A)
+            BC_LOG("A key down\n");
+
+        if(button == BC_KEY_B)
+            BC_LOG("B key down\n");
+
+        if(button == BC_KEY_C)
+            BC_LOG("C key down\n");
+
+        if(button == BC_KEY_D)
+            BC_LOG("D key down\n");
+
+        if(button == BC_KEY_E)
+            BC_LOG("E key down\n");
+
+        if(button == BC_KEY_F)
+            BC_LOG("F key down\n");
+
+        if(button == BC_KEY_G)
+            BC_LOG("G key down\n");
+
+        if(button == BC_KEY_H)
+            BC_LOG("H key down\n");
+
+        if(button == BC_KEY_I)
+            BC_LOG("I key down\n");
+
+        if(button == BC_KEY_J)
+            BC_LOG("J key down\n");
+
+        if(button == BC_KEY_K)
+            BC_LOG("K key down\n");
+
+        if(button == BC_KEY_L)
+            BC_LOG("L key down\n");
+
+        if(button == BC_KEY_M)
+            BC_LOG("M key down\n");
+
+        if(button == BC_KEY_N)
+            BC_LOG("N key down\n");
+
+        if(button == BC_KEY_O)
+            BC_LOG("O key down\n");
+
+        if(button == BC_KEY_P)
+            BC_LOG("P key down\n");
+
+        if(button == BC_KEY_Q)
+            BC_LOG("Q key down\n");
+
+        if(button == BC_KEY_R)
+            BC_LOG("R key down\n");
+
+        if(button == BC_KEY_S)
+            BC_LOG("S key down\n");
+
+        if(button == BC_KEY_T)
+            BC_LOG("T key down\n");
+
+        if(button == BC_KEY_U)
+            BC_LOG("U key down\n");
+
+        if(button == BC_KEY_V)
+            BC_LOG("V key down\n");
+
+        if(button == BC_KEY_W)
+            BC_LOG("W key down\n");
+
+        if(button == BC_KEY_X)
+            BC_LOG("X key down\n");
+
+        if(button == BC_KEY_Y)
+            BC_LOG("Y key down\n");
+
+        if(button == BC_KEY_Z)
+            BC_LOG("Z key down\n");
+    }
+
+    if(Type == BC_RELEASED)
+    {
+
+    }
+}
