@@ -47,6 +47,7 @@ void StateManager::SetActiveState(std::string Key)
     if(AliveState != NULL)
     {
         State* OldState = m_CurrentState;
+		OldState->DeInit();
 
         m_CurrentState = AliveState;
         m_CurrentState->OnActivate();

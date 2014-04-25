@@ -82,12 +82,23 @@ Mat4 PerspectiveProjection(f32 Fov, f32 Width, f32 Height, f32 zNear, f32 zFar)
     const f32 zRange     = zNear - zFar;
     const f32 tanHalfFOV = tanf(ToRadian(Fov / 2.0f));
 
-    Ret.m[0][0] = (1.0f/tanHalfFOV) / ar; Ret.m[1][0] = 0.0f;            Ret.m[2][0] = 0.0f;                    Ret.m[3][0] = 0.0;
-    Ret.m[0][1] = 0.0f;                   Ret.m[1][1] = 1.0f/tanHalfFOV; Ret.m[2][1] = 0.0f;                    Ret.m[3][1] = 0.0;
+    Ret.m[0][0] = (1.0f/tanHalfFOV) / ar; Ret.m[1][0] = 0.0f;            Ret.m[2][0] = 0.0f;                    Ret.m[3][0] = 0.0f;
+    Ret.m[0][1] = 0.0f;                   Ret.m[1][1] = 1.0f/tanHalfFOV; Ret.m[2][1] = 0.0f;                    Ret.m[3][1] = 0.0f;
     Ret.m[0][2] = 0.0f;                   Ret.m[1][2] = 0.0f;            Ret.m[2][2] = (zNear + zFar)/zRange ;  Ret.m[3][2] = 2.0f * zFar*zNear/zRange;
-    Ret.m[0][3] = 0.0f;                   Ret.m[1][3] = 0.0f;            Ret.m[2][3] = -1.0f;                    Ret.m[3][3] = 0.0;
+    Ret.m[0][3] = 0.0f;                   Ret.m[1][3] = 0.0f;            Ret.m[2][3] = -1.0f;                    Ret.m[3][3] = 0.0f;
 
     return Ret;
+}
+
+Mat4 OrthoProjection(f32 l, f32 r, f32 t, f32 b, f32 n, f32 f) {
+
+	Mat4 Ret = Mat4();
+	Ret.m[0][0] = 2 / (r - l);				Ret.m[1][0] = 0.0f;				Ret.m[2][0] = 0.0f;					Ret.m[3][0] = -(r + l) / (r - l);
+	Ret.m[0][1] = 0.0f;						Ret.m[1][1] = 2 / (t - b);		Ret.m[2][1] = 0.0f;					Ret.m[3][1] = -(t + b) / (t - b);
+	Ret.m[0][2] = 0.0f;						Ret.m[1][2] = 0.0f;				Ret.m[2][2] = -2 / (f - n);			Ret.m[3][2] = -(f + n) / (f - n);
+	Ret.m[0][3] = 0.0f;						Ret.m[1][3] = 0.0f;				Ret.m[2][3] = 0.0f;                 Ret.m[3][3] = 1.0f;
+	
+	return Ret;
 }
 
 Mat4 Transpose(Mat4 In)

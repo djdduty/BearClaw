@@ -28,7 +28,10 @@ void BcCamera::Update()
 
 Mat4& BcCamera::GetProjection()
 {
-    return PerspectiveProjection(m_Settings.Fov, m_Settings.Width, m_Settings.Height, m_Settings.Near, m_Settings.Far);
+	if (m_Settings.Persp)
+		return PerspectiveProjection(m_Settings.Fov, WindowWidth, WindowHeight, m_Settings.Near, m_Settings.Far);
+
+	return OrthoProjection(0, WindowWidth, WindowHeight, 0, 0, m_Settings.Far);
 }
 
 Mat4& BcCamera::GetTransform()

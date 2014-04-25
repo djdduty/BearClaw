@@ -36,7 +36,7 @@ void MainState::Init(StateManager* Manager)
 
     SceneNode* CamNode = new SceneNode("CameraNode");
     m_Scene->AddChild(CamNode);
-    m_CamComp = new CameraComponent("Camera1");
+    m_CamComp = new CameraComponent("Camera1", true);
     CamNode->AddComponent(m_CamComp);
     m_CamComp->SetAsActiveCamera();
     m_CamComp->Translate(Vec3(0,0,-2));

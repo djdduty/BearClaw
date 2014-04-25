@@ -11,7 +11,7 @@ private:
     BcCamera*   m_Camera;
 public:
     //Constructor/Destructor and component functions
-    CameraComponent(BcString Name);
+    CameraComponent(BcString Name, bool IsPerspective);
     ~CameraComponent();
     void Update();
 

@@ -33,7 +33,7 @@ void Environment::Init(WindowInitializer WinInit)
     m_InputManager->Init(m_Window);
     m_ShaderManager->Init();
 
-    BC_LOG(" Done.\n");
+    BC_LOG("Done.\n");
     BC_LOG("Window size: %u x %u\n", WinInit.Width, WinInit.Height);
     BC_LOG("Desired GL Context version: %u.%u\n\n", WinInit.MajorVersion, WinInit.MinorVersion);
 }

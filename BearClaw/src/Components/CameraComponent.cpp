@@ -3,7 +3,7 @@
 #include <Scene/Scene.h>
 
 namespace BearClaw {
-CameraComponent::CameraComponent(BcString Name) : Component(Name)
+	CameraComponent::CameraComponent(BcString Name, bool IsPerspective) : Component(Name)
 {
     CameraInitializer CamInit;
     CamInit.Far = 1000.0f;
@@ -11,7 +11,7 @@ CameraComponent::CameraComponent(BcString Name) : Component(Name)
     CamInit.Near = 0.1f;
     CamInit.Height = WindowHeight;
     CamInit.Width = WindowWidth;
-    CamInit.Persp = true;
+    CamInit.Persp = IsPerspective;
     CamInit.Pos = Vec3(0,0,0);
 
     m_Camera = new BcCamera(CamInit);

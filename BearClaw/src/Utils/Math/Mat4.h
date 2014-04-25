@@ -12,6 +12,7 @@ Mat4 RotateTransform(Vec3 Rot);
 Mat4 TranslationTransform(Vec3 Trans);
 Mat4 LookAt(Vec3 Position, Vec3 Target, Vec3 Up);
 Mat4 PerspectiveProjection(f32 Fov, f32 Width, f32 Height, f32 Near, f32 Far);
+Mat4 OrthoProjection(f32 Left, f32 Right, f32 Top, f32 Bottom, f32 Near, f32 Far);
 Mat4 Transpose(Mat4 In);
 Mat4 Inverse(Mat4 In);
 
