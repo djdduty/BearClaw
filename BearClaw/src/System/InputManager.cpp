@@ -38,6 +38,8 @@ void InputManager::RemoveKeyDownCB(KeyCB CB)
     }
 }
 
+
+
 void InputManager::RemoveMouseMoveCB(MouseMoveCB CB)
 {
     for(i32 i = 0;i < m_MouseMoveCBs.size();i++)
@@ -47,6 +49,7 @@ void InputManager::RemoveMouseMoveCB(MouseMoveCB CB)
             m_MouseMoveCBs.erase(m_MouseMoveCBs.begin()+i);
             return;
         }
+		//m_MouseMoveCBs.erase(m_MouseMoveCBs.begin() + i);
     }
 }
 
@@ -62,6 +65,19 @@ void InputManager::RemoveMouseButtonCB(MouseButtonCB CB)
     }
 }
 
+void InputManager::RemoveKeyDownFunctions()
+{
+	for (i32 i = 0; i < m_KeyFunctions.size(); i++)
+	{
+			m_KeyFunctions.erase(m_KeyFunctions.begin() + i);
+
+	}
+}
+
+
+void InputManager::RemoveMouseMoveFunctions() {}
+void InputManager::RemoveMouseButtconFunctions() {}
+
 void InputManager::OnKeyDown(char Key, Action_Type Action)
 {
     for(i32 i = 0; i < m_KeyCBs.size(); i++)
@@ -69,6 +85,11 @@ void InputManager::OnKeyDown(char Key, Action_Type Action)
         KeyCB Keycb = m_KeyCBs[i];
         Keycb(Key, Action);
     }
+
+	for (i32 n = 0; n < m_KeyFunctions.size(); n++)
+	{
+		m_KeyFunctions[n](Key, Action);
+	}
 }
 
 void InputManager::OnMouseMove(double x, double y)
@@ -77,7 +98,13 @@ void InputManager::OnMouseMove(double x, double y)
     {
         MouseMoveCB MMCB = m_MouseMoveCBs[i];
         MMCB(x, y);
+		//printf("MouseMove Callback %d", i);
     }
+
+	for (i32 n = 0; n < m_MouseMoveFunctions.size(); n++)
+	{
+		m_MouseMoveFunctions[n](x, y);
+	}
 }
 
 void InputManager::OnMouseButton(Mouse_Button Button, Action_Type Action)
@@ -87,5 +114,10 @@ void InputManager::OnMouseButton(Mouse_Button Button, Action_Type Action)
         MouseButtonCB MBCB = m_MouseButtonCBs[i];
         MBCB(Button, Action);
     }
+
+	for (i32 n = 0; n < m_MouseButtonFunctions.size(); n++)
+	{
+		m_MouseButtonFunctions[n](Button, Action);
+	}
 }
 }

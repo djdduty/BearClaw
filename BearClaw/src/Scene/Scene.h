@@ -13,12 +13,14 @@ protected:
     RenderScene* m_RenderScene;
 
 public:
-    Scene(BcString Name);
+	Scene(string Name);
     ~Scene();
     void OnInit();
     void OnDeInit();
     void OnEnable();
     void OnDisable();
+
+	SceneNodes GetChildren() { return m_Children; }
     //TODO PhysicsWorld* GetPhysicsWorld();
 
     bool IsScene()

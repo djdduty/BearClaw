@@ -3,7 +3,7 @@
 #include <System/Environment.h>
 
 namespace BearClaw {
-Component::Component(BcString Name)
+Component::Component(string Name)
 {
     m_Name  = Name;
     m_Id    = Environ->GetUuid(BC_COMPONENT);
@@ -73,7 +73,7 @@ bool Component::GetEnabled()
     return m_Enabled;
 }
 
-BcString Component::GetName()
+string Component::GetName()
 {
     return m_Name;
 }

@@ -9,8 +9,13 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
-    glDeleteBuffers(1, &m_Vbo);
-    glDeleteBuffers(1, &m_Ibo);
+
+}
+
+void Mesh::DeInit() {
+	glDeleteBuffers(1, &m_Vao);
+	glDeleteBuffers(1, &m_Vbo);
+	glDeleteBuffers(1, &m_Ibo);
 }
 
 void Mesh::LoadMesh(VertexList V, IndexList I)

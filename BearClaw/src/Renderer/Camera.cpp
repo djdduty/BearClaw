@@ -4,7 +4,13 @@
 namespace BearClaw {
 BcCamera::BcCamera(CameraInitializer &Settings)
 {
-    m_Settings = Settings;
+	m_Settings = Settings;
+	m_TransNeedsUpdate = false;
+
+	if (m_Settings.Persp)
+		m_Projection = PerspectiveProjection(m_Settings.Fov, WindowWidth, WindowHeight, m_Settings.Near, m_Settings.Far);
+	else
+		m_Projection = OrthoProjection(0, WindowWidth, WindowHeight, 0, 0, m_Settings.Far);
 }
 
 void BcCamera::Init()
@@ -14,31 +20,45 @@ void BcCamera::Init()
 
 void BcCamera::Translate(Vec3 Trans)
 {
-    m_Position += Trans.Multiply(GetTransform());
+	m_Position += Trans.Multiply(GetTransform());
+	m_TransNeedsUpdate = true;
 }
 
-void BcCamera::Rotate(Vec3 &Rot)
+void BcCamera::Rotate(Vec3 Rot)
 {
     m_Rotation = m_Rotation + Rot;
-    Update();
+	m_TransNeedsUpdate = true;
 }
 
 void BcCamera::Update()
-{}
-
-Mat4& BcCamera::GetProjection()
 {
-	if (m_Settings.Persp)
-		return PerspectiveProjection(m_Settings.Fov, WindowWidth, WindowHeight, m_Settings.Near, m_Settings.Far);
-
-	return OrthoProjection(0, WindowWidth, WindowHeight, 0, 0, m_Settings.Far);
+	if (m_TransNeedsUpdate)
+		UpdateTransformation();
 }
 
-Mat4& BcCamera::GetTransform()
+void BcCamera::UpdateProjection() 
 {
-    Mat4* Ret = new Mat4();
-    Ret->Translate(m_Position);
-    Ret->Rotate(m_Rotation);
-    return *Ret;
+	if (m_Settings.Persp)
+		m_Projection = PerspectiveProjection(m_Settings.Fov, WindowWidth, WindowHeight, m_Settings.Near, m_Settings.Far);
+	else
+		m_Projection = OrthoProjection(0, WindowWidth, WindowHeight, 0, 0, m_Settings.Far);
+}
+
+Mat4 BcCamera::GetProjection()
+{
+	return m_Projection;
+}
+
+Mat4 BcCamera::GetTransform()
+{
+	if (m_TransNeedsUpdate)
+		UpdateTransformation();
+	return m_Transformation;
+}
+
+void BcCamera::UpdateTransformation() {
+	m_Transformation = Mat4(1.0f);
+	m_Transformation.Translate(m_Position);
+	m_Transformation.Rotate(m_Rotation);
 }
 }

@@ -26,6 +26,8 @@ namespace BearClaw
                     Str += Formatted[i];
                 }
                 Str += '\0';
+
+				free (Formatted);
                 return Str;
             }
         BcString::BcString()

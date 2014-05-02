@@ -15,14 +15,17 @@ GameApp::GameApp(State* S)
 
 GameApp::~GameApp()
 {
-    delete m_StateManager;
+	delete m_StateManager;
+	delete Environ;
 }
 
 void GameApp::Start()
 {
     f64 OldTime = BCGetTimeInMS();
     f64 DeltaTime = 0.0f;
-    
+	i32 Frames = 0;
+	f64 FrameCounter = 0;
+
     BC_LOG("Starting main loop...\n");
 
     m_StateManager->Init(this);
@@ -39,8 +42,17 @@ void GameApp::Start()
         m_StateManager->UpdateState(DeltaTime);
         
         GameWindow->SwapBuffers();
-    }
 
+		//Frames++;
+		//FrameCounter += DeltaTime / 1000;
+		//if (FrameCounter >= 1) {
+			//BC_LOG("%d fps\n", Frames);
+			//Frames = 0;
+			//FrameCounter = 0;
+		//}
+    }
+	m_StateManager->ChangeState(nullptr);
+	m_StateManager->DeInit();
     GameWindow->Destroy();
 }
 }

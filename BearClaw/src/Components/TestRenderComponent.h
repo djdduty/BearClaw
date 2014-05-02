@@ -15,8 +15,8 @@ protected:
     Mesh* M;
 
 public:
-    TestRenderComponent(BcString Name);
-    ~TestRenderComponent();
+	TestRenderComponent(string Name);
+    virtual ~TestRenderComponent();
     void OnInit();
     void OnDeInit();
     void OnEnable();

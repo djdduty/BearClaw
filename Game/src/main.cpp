@@ -7,6 +7,8 @@
 #include <System/Environment.h>
 #include <MainState.h>
 
+//#include <vld.h>
+
 using namespace BearClaw;
 using namespace BcGame;
 
@@ -31,4 +33,6 @@ int main()
     Environ->Init(WinInit);
     GameApp* Game = new GameApp(new MainState());
     Game->Start();
+	delete(Game);
+	exit(0);
 }

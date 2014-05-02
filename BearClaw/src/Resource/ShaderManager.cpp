@@ -7,6 +7,15 @@ ShaderManager::ShaderManager()
 
 }
 
+ShaderManager::~ShaderManager() {
+	for (int i = 0; i < m_Shaders.size(); i++)
+	{
+		delete(m_Shaders[i]);
+	}
+
+	m_Shaders.clear();
+}
+
 void ShaderManager::Init()
 {
 

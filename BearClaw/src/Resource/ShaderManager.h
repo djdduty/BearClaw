@@ -16,6 +16,7 @@ private:
 
 public:
     ShaderManager();
+	~ShaderManager();
     void Init();
     HLShaderWrapper* GetShader(ShaderFlags Flags);
     void AddShader(HLShaderWrapper* Shader) {m_Shaders.push_back(Shader);}

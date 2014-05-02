@@ -13,6 +13,11 @@ Environment::Environment() :    m_FileSystem(new BcFileSystem()),
 Environment::~Environment()
 {
     delete m_FileSystem;
+	delete m_ShaderManager;
+	delete m_TextureManager;
+	delete m_InputManager;
+	delete m_Window;
+	delete m_Renderer;
 }
 
 void Environment::Init(WindowInitializer WinInit)
@@ -106,6 +111,7 @@ i32 Environment::Log(const char* Text, ...)
     i32 Ret = fprintf(m_Log, "%s", Formatted);
     printf("%s", Formatted);
 
+	free(Formatted);
     return Ret;
 }
 

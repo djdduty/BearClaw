@@ -16,7 +16,7 @@ namespace BearClaw {
 		string m_TexName;
 
 	public:
-		TwoDimRenderComponent(BcString Name, string TexName);
+		TwoDimRenderComponent(string Name, string TexName);
 		~TwoDimRenderComponent();
 		void OnInit();
 		void OnDeInit();

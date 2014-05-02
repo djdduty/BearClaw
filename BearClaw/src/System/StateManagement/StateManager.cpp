@@ -22,11 +22,19 @@ void StateManager::Init(GameApp* G)
     BC_LOG("Done initializing state manager.\n");
 }
 
+void StateManager::DeInit() {
+	if (m_CurrentState)
+		m_CurrentState->DeInit();
+	//delete m_CurrentState;
+}
+
 void StateManager::ChangeState(State* S)
 {
     State* OldState = m_CurrentState;
+	OldState->DeInit();
     m_CurrentState = S;
-    m_CurrentState->Init(this);
+	if (S)
+		m_CurrentState->Init(this);
     delete OldState;
 }
 

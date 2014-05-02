@@ -8,7 +8,7 @@
 
 namespace BearClaw {
 
-typedef std::map<BcString, StrongRenderNodePtr> RenderNodes;
+typedef std::map<string, RenderNode*> RenderNodes;
 
 class Renderer;
 
@@ -26,8 +26,8 @@ public:
     RenderScene();
     ~RenderScene();
 
-    StrongRenderNodePtr AddChild(RenderNode* Node);
-    void RemoveChild(BcString Name);
+    RenderNode* AddChild(RenderNode* Node);
+	void RemoveChild(string Name);
 
     void SetActiveCamera(BcCamera* Cam);
     BcCamera* GetActiveCamera();
@@ -37,6 +37,7 @@ public:
     void Enable();
     void Disable();
     bool IsEnabled();
+	RenderNode* FindChild(string Name);
 };
 }
 

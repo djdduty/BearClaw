@@ -3,7 +3,7 @@
 #include <Scene/Scene.h>
 
 namespace BearClaw {
-	CameraComponent::CameraComponent(BcString Name, bool IsPerspective) : Component(Name)
+	CameraComponent::CameraComponent(string Name, bool IsPerspective) : Component(Name)
 {
     CameraInitializer CamInit;
     CamInit.Far = 1000.0f;
@@ -19,7 +19,7 @@ namespace BearClaw {
 
 CameraComponent::~CameraComponent()
 {
-
+	delete m_Camera;
 }
 
 void CameraComponent::SetAsActiveCamera()

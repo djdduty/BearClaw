@@ -4,6 +4,7 @@
 #include <Scene/Scene.h>
 #include <Components/CameraComponent.h>
 #include <Components/TestRenderComponent.h>
+#include <System/InputManager.h>
 #include <Renderer/Renderer.h>
 #include <System/StateManagement/State.h>
 #include <Gui/FontString.h>
@@ -16,9 +17,8 @@ class MainState : public State
 private:
     CameraComponent* m_CamComp;
     Scene* m_Scene;
-    FontString* FontTest;
-    FontString* FontTest2;
-    FontString* FontTest3;
+	bool m_SceneUnset;
+	KeyFunc m_KeyFunction;
 
 public:
     MainState();
@@ -29,6 +29,8 @@ public:
     void OnActivate();
     void OnDeactivate();
     void Update(f64 DeltaTime);
+
+	void KeyCallback(char button, Action_Type Type);
 
     //void KeyCallback(char button, Action_Type Type);
 };

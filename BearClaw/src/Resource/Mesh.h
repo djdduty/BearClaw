@@ -39,6 +39,7 @@ public:
     Mesh();
     ~Mesh();
 
+	void DeInit();
     void LoadMesh(VertexList VList, IndexList IList);
     VertexList CalculateTangents(VertexList VList, IndexList IList);
     void Render();

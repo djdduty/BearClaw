@@ -10,7 +10,7 @@ BcWindow::BcWindow(WindowInitializer &Initializer)
 
 BcWindow::~BcWindow()
 {
-
+	delete m_Window;
 }
 
 void BcWindow::Create()

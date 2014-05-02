@@ -18,13 +18,13 @@ private:
     bool        m_Enabled;//       = false;
 
 protected:
-    BcString    m_Name;
+	string      m_Name;
     uid         m_Id;
     SceneNode*  m_Owner;
 
 public:
     //Constructor/Destructor
-    Component(BcString Name);
+	Component(string Name);
     virtual ~Component(){}
     //
 
@@ -42,7 +42,7 @@ public:
 
     //Getters
     uid         GetUuid();
-    BcString    GetName();
+	string      GetName();
     SceneNode*  GetOwner();
     bool        GetEnabled();
     bool        GetInitialized();

@@ -4,16 +4,15 @@
 #include <Resource/Shapes.h>
 
 namespace BearClaw {
-TestRenderComponent::TestRenderComponent(BcString Name) : Component(Name), RenderNode(Name + "-RenderNode")
+TestRenderComponent::TestRenderComponent(string Name) : Component(Name), RenderNode(Name + "-RenderNode")
 {
     Timer = 0.0f;
-    m_Transform = Mat4();
     M = new Mesh();
 }
 
 TestRenderComponent::~TestRenderComponent()
 {
-
+	delete M;
 }
 
 void TestRenderComponent::OnInit()
@@ -30,11 +29,12 @@ void TestRenderComponent::InitRenderNode()
 	Indices = GetSphereIndices(32, 64);
 
     M->LoadMesh(Verts, Indices);
+	m_Owner->SetAABB(Verts);
 }
 
 void TestRenderComponent::OnDeInit()
 {
-
+	M->DeInit();
 }
 
 void TestRenderComponent::OnEnable()

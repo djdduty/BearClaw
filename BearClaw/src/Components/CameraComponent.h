@@ -11,7 +11,7 @@ private:
     BcCamera*   m_Camera;
 public:
     //Constructor/Destructor and component functions
-    CameraComponent(BcString Name, bool IsPerspective);
+	CameraComponent(string Name, bool IsPerspective);
     ~CameraComponent();
     void Update();
 
@@ -23,6 +23,7 @@ public:
     void UpdateProjection();
     void Translate(Vec3 Trans);
 
+	BcCamera* GetCamera() { return m_Camera; }
     Mat4& GetTransform();
     Mat4& GetProjection();
     Vec3& GetPosition();

@@ -5,11 +5,13 @@
 #include <Utils/Math.h>
 #include <System/OS/PlatformIncludes.h>
 #include <vector>
+#include <map>
+
+#include <functional>
 
 /*
  * TODO: Add callbacks with pressed/release action similair to default glfw callbacks for gui and other things that need it.
  */
-
 
 #define ARRAY_SIZE_IN_ELEMENTS(a) (sizeof(a)/sizeof(a[0]))
 
@@ -173,6 +175,14 @@ typedef std::vector<KeyCB> Keycallbacks;
 typedef std::vector<MouseMoveCB> MouseMoveCallbacks;
 typedef std::vector<MouseButtonCB> MouseButtonCallbacks;
 
+
+typedef std::function<void(char, Action_Type)> KeyFunc;
+typedef std::function<void(f64, f64)> MouseMoveFunc;
+typedef std::function<void(Mouse_Button, Action_Type)> MouseButtonFunc;
+typedef std::vector<KeyFunc> KeyFuncList;
+typedef std::vector<MouseMoveFunc> MouseMoveFuncList;
+typedef std::vector<MouseButtonFunc> MouseButtonFuncList;
+
 class InputManager
 {
 public:
@@ -200,6 +210,9 @@ private:
     Keycallbacks            m_KeyCBs;
     MouseMoveCallbacks      m_MouseMoveCBs;
     MouseButtonCallbacks    m_MouseButtonCBs;
+	KeyFuncList				m_KeyFunctions;
+	MouseMoveFuncList		m_MouseMoveFunctions;
+	MouseButtonFuncList		m_MouseButtonFunctions;
 
 public:
     InputManager() { Reset(); }
@@ -240,9 +253,21 @@ public:
     void RemoveMouseMoveCB(MouseMoveCB CB);
     void RemoveMouseButtonCB(MouseButtonCB CB);
 
+	//Functions
+	void AddKeyDownFunction(KeyFunc KF) { m_KeyFunctions.push_back(KF); }
+	void AddKeyDownFunction(MouseMoveFunc MMF) { m_MouseMoveFunctions.push_back(MMF); }
+	void AddKeyDownFunction(MouseButtonFunc MBF) { m_MouseButtonFunctions.push_back(MBF); }
+
+	void RemoveKeyDownFunctions();
+	void RemoveMouseMoveFunctions();
+	void RemoveMouseButtconFunctions();
+
+	//lower level calls, calls the cbs and funcs
     void OnMouseMove(double x, double y);
     void OnKeyDown(char Key, Action_Type Action);
     void OnMouseButton(Mouse_Button Button, Action_Type Action);
+
+	
 
     void ClearCallbacks()
     {
@@ -250,6 +275,13 @@ public:
         m_MouseMoveCBs.clear();
         m_MouseButtonCBs.clear();
     }
+
+	void ClearFunctions()
+	{
+		m_KeyFunctions.clear();
+		m_MouseMoveFunctions.clear();
+		m_MouseButtonFunctions.clear();
+	}
 
     //
 

@@ -1,37 +1,29 @@
 #include <MainState.h>
 #include <System/StateManagement/StateManager.h>
+#include <Resource/Shapes.h>
 #include <Gui/FontFile.h>
+#include <functional>
+#include <sstream>
 
 using namespace BearClaw;
 namespace BcGame {
-CameraComponent* CamComp;
-TestRenderComponent* tc;
-
-string Content;
-void KeyCallback(char button, Action_Type Type)
-{
-    if(Type == BC_PRESSED)
-    {
-        if(button == BC_KEY_ESCAPE)
-            GameWindow->SetCloseRequested(true);
-    }
-}
-
 MainState::MainState()
 {
-
+	m_SceneUnset = false;
 }
 
 MainState::~MainState()
 {
-
+	RenderSingleton->UnsetScene();
+	m_Scene->DeInit();
+	delete(m_Scene);
 }
 
 void MainState::Init(StateManager* Manager)
 {
     m_Scene = new Scene("TestScene");
     m_Scene->Init();
-
+	
     BC_LOG("Main state being initialized\n");
 
     SceneNode* CamNode = new SceneNode("CameraNode");
@@ -41,23 +33,27 @@ void MainState::Init(StateManager* Manager)
     m_CamComp->SetAsActiveCamera();
     m_CamComp->Translate(Vec3(0,0,-2));
 
-    SceneNode* RenderNode = new SceneNode("RenderNode");
-    m_Scene->AddChild(RenderNode);
-    tc = new TestRenderComponent("TriangleComponent");
-    tc->GetTransformPtr()->Translate(Vec3(0,0,0));
-    tc->GetMaterial()->SetDiffuseTex("Data/Textures/Checker.png");
-    tc->GetMaterial()->SetNormalTex("Data/Textures/NormalCement.png");
-    RenderNode->AddComponent(tc);
-
-    InputMgr->AddKeyDownCB(KeyCallback);
-    RenderSingleton->SetScene(m_Scene);
-
-    CamComp = m_CamComp;
+	SceneNode* Node = new SceneNode("RenderNode");
+	m_Scene->AddChild(Node);
+	TestRenderComponent* tc = new TestRenderComponent("RenderNode-RenderComp");
+	tc->GetMaterial()->SetDiffuseTex("Data/Textures/Checker.png");
+	Node->AddComponent(tc);
+	
+    RenderSingleton->SetScene(m_Scene->GetRenderScene());
+	
+	using std::placeholders::_1;
+	using std::placeholders::_2;
+	m_KeyFunction = std::bind(&MainState::KeyCallback, this, _1, _2);
+    InputMgr->AddKeyDownFunction(m_KeyFunction);
 }
 
 void MainState::DeInit()
 {
-
+	InputMgr->RemoveKeyDownFunctions();
+	RenderSingleton->UnsetScene();
+	m_SceneUnset = true;
+	m_Scene->DeInit();
+	delete(m_Scene);
 }
 
 void MainState::OnActivate()
@@ -72,7 +68,17 @@ void MainState::OnDeactivate()
 
 void MainState::Update(f64 DeltaTime)
 {
-    m_Scene->Update(DeltaTime);
-    tc->GetTransformPtr()->Rotate(Vec3(0,0.01*DeltaTime,0));
+	if (!m_SceneUnset) {
+		m_Scene->Update(DeltaTime);
+	}
+}
+
+void MainState::KeyCallback(char button, Action_Type Type)
+{
+	if (button == BC_KEY_ESCAPE && Type == BC_PRESSED) {
+		if (!m_SceneUnset) {
+			GameWindow->SetCloseRequested(true);
+		}
+	}
 }
 }

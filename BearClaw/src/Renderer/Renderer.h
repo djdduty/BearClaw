@@ -23,7 +23,6 @@ private:
 
 protected:
     RendererInitializer m_Settings;
-    Scene*              m_Scene;
     RenderScene*        m_RenderScene;
     bool                m_SceneHasBeenSet;
 
@@ -42,17 +41,16 @@ public:
     void Init();
     void SetupShaders();
 
-    void SetScene(Scene* Scn)
+    void SetScene(RenderScene* Scn)
     {
-        m_Scene = Scn;
-        m_RenderScene = Scn->GetRenderScene();
+        m_RenderScene = Scn;
         m_SceneHasBeenSet = true;
     }
 
-    Scene* GetScene()
-    {
-        return m_Scene;
-    }
+	void UnsetScene() {
+		m_SceneHasBeenSet = false;
+		m_RenderScene = nullptr;
+	}
 
     RenderScene* GetRenderScene()
     {

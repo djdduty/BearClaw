@@ -1,4 +1,5 @@
 #include <Renderer/Renderer.h>
+#include <vector>
 
 namespace BearClaw {
 
@@ -66,11 +67,6 @@ Renderer::~Renderer(){}
 void Renderer::Init()
 {
     SetupShaders();
-
-    FontFile* Test = new FontFile("font2");
-    Test->Parse();
-    Test1 = new FontString("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 1234567890", Vec2(0,0), Test, 0.5);
-    Test2 = new FontString("The quick brown fox jumps over the lazy dog 1234567890", Vec2(0,-80), Test, 0.5);
 }
 
 void Renderer::SetupShaders()
@@ -114,6 +110,9 @@ void Renderer::Render()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	std::vector<RenderNode*> AfterList = std::vector<RenderNode*>();
+	std::vector<RenderNode*> TwoDList = std::vector<RenderNode*>();
+
     if(m_SceneHasBeenSet)
     {
         glEnable(GL_DEPTH_TEST);
@@ -121,19 +120,42 @@ void Renderer::Render()
         
         for(RenderNodes::iterator it = m_RenderScene->m_Children.begin(); it != m_RenderScene->m_Children.end(); it++)
         {
-            if(it->second->IsVisible())
-            {
-                it->second->PreRender();
-                it->second->Render();
-                it->second->PostRender();
+			if (it->second->IsVisible())
+			{
+				if (!it->second->pRenderLast && !it->second->GetMaterial()->GetUseFontShader()) {
+					it->second->PreRender();
+					it->second->Render();
+					it->second->PostRender();
+				} else {
+					if (it->second->GetMaterial()->GetUseFontShader()) TwoDList.push_back(it->second);
+					else AfterList.push_back(it->second);
+				}
             }
         }
+
+		glClear(GL_DEPTH_BUFFER_BIT);
+		for (i32 i = 0; i < AfterList.size(); i++) {
+			RenderNode* n = AfterList[i];
+			if (n->IsVisible()) {
+				n->PreRender();
+				n->Render();
+				n->PostRender();
+			}
+		}
+
+		for (i32 n = 0; n < TwoDList.size(); n++) {
+			glClear(GL_DEPTH_BUFFER_BIT);
+			RenderNode* r = TwoDList[n];
+			if (r->IsVisible()) {
+				r->PreRender();
+				r->Render();
+				r->PostRender();
+			}
+		}
+
+		AfterList.clear();
+		TwoDList.clear();
     }
 
-    glClear(GL_DEPTH_BUFFER_BIT);
-    glDisable(GL_DEPTH_TEST);
-    Test1->Render();
-    Test2->Render();
-    glEnable(GL_DEPTH_TEST);
 }
 }

@@ -15,13 +15,14 @@ HLShaderWrapper::HLShaderWrapper(std::string VSFilePath, std::string FSFilePath,
     if(m_ShaderProgram->getAllInfoLogs().size() > 0)
     {
         BC_LOG("\n");
-        //BC_LOG(m_ShaderProgram->getAllInfoLogs().c_str());
+        BC_LOG(m_ShaderProgram->getAllInfoLogs().c_str());
     }
 }
 
 HLShaderWrapper::~HLShaderWrapper()
 {
     delete m_ShaderProgram;
+	delete m_Flags;
 }
 
 void HLShaderWrapper::LinkProgram()

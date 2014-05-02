@@ -1,6 +1,7 @@
 #ifndef SCENE_NODE_H
 #define SCENE_NODE_H
 
+#include <Utils/AABoundingBox.h>
 #include <Scene/Component.h>
 #include <Utils/Math.h>
 #include <map>
@@ -10,8 +11,8 @@ using namespace std::tr1;
 namespace BearClaw {
 class Scene;
 
-typedef std::map<BcString, StrongNodePtr>       SceneNodes;
-typedef std::map<BcString, StrongComponentPtr>  Components;
+typedef std::map<string, StrongNodePtr>       SceneNodes;
+typedef std::map<string, StrongComponentPtr>  Components;
 
 class SceneNode
 {
@@ -24,9 +25,14 @@ private:
 
 protected:
     uid         m_Id;
-    BcString    m_Name;
+	string		m_Name;
     bool        IsScene();
     SceneNode*  m_Parent;
+	
+	Vec3 m_Position;
+	Vec3 m_Rotation;
+	Mat4 m_Transform;
+	bool m_TransNeedsUpdate;
 
     //Functions
     void UpdateAllComponents(f64 DeltaTime);
@@ -39,9 +45,12 @@ protected:
     //Children
     SceneNodes m_Children;
 
+	//Misc
+	AABoundingBox* m_BoundingBox;
+
 public:
     //Constructor/Destructor
-    SceneNode(BcString Name);
+	SceneNode(string Name);
     virtual ~SceneNode();
     //
 
@@ -54,24 +63,24 @@ public:
 
     //Children functions
     StrongNodePtr   AddChild(SceneNode* Node);
-    StrongNodePtr   FindChild(BcString Name, bool recursive = true);
-    void            RemoveChild(BcString Name);
+	StrongNodePtr   FindChild(string Name, bool recursive = true);
+	StrongNodePtr   FindChild(uid ID, bool recursive = true);
+	void            RemoveChild(string Name);
     //
 
     //Component functions
-    bool HasComponent(BcString name);
+	bool HasComponent(string name);
 
     template <typename ComponentType>
     shared_ptr<ComponentType> AddComponent(ComponentType* component)
     {
-        BcString name = component->GetName();
+		string name = component->GetName();
         if(!HasComponent(name))
         {
             StrongComponentPtr  ptr(component);
             ptr->SetOwner(this);
             ptr->Init();
-            std::pair<BcString, StrongComponentPtr> pair(name, ptr);
-            m_Components.insert(pair);
+            m_Components.insert(std::make_pair(name, ptr));
 
             if(!m_Enabled)
                 component->Disable();
@@ -84,7 +93,7 @@ public:
     }
 
     template <typename ComponentType>
-    shared_ptr<ComponentType> FindComponent(BcString Name)
+	shared_ptr<ComponentType> FindComponent(string Name)
     {
         if(!HasComponent(Name))
             return shared_ptr<ComponentType>();
@@ -92,27 +101,41 @@ public:
         return dynamic_pointer_cast<ComponentType>(m_Components[Name]);
     }
 
-    void RemoveComponent(BcString Name);
+	void RemoveComponent(string Name);
     //
 
     //Setters
     void SetParent(SceneNode* Parent);
+	void Translate(Vec3 Pos)			{ m_Position += Pos; m_TransNeedsUpdate = true;									}
+	void Rotate(Vec3 Rot)				{ m_Rotation += Rot; m_TransNeedsUpdate = true;									}
+	void SetAABB(AABoundingBox* AABB)	{ if (AABB != nullptr){ delete m_BoundingBox; m_BoundingBox = AABB; }			}
+	void SetAABB(VertexList Verts)		{ delete m_BoundingBox; m_BoundingBox = new AABoundingBox(m_Position, Verts);	}
     //
 
     //Getters
     SceneNode* GetParent();
-    BcString GetName();
+	string GetName();
     virtual Scene* GetScene();
     bool GetEnabled();
-    //
+	inline Vec3 GetPosition()	{ return m_Position;	}
+	inline Vec3 GetRotation()	{ return m_Rotation;	}
+	inline uid GetID()			{ return m_Id;			}
+	inline Mat4 GetTransform()	{ return m_Transform;	}
+	AABoundingBox* GetAABB()	{ return m_BoundingBox; }
+	//
 
     //virtual misc
     virtual void OnInit();
     virtual void OnDeInit();
     virtual void OnEnable();
     virtual void OnDisable();
+	virtual void OnUpdate(f64 DeltaTime);
     virtual void Update(f64 DeltaTime);
     //
+
+	//hacky hacky
+	void Action(i32 type);
+	virtual void OnAction(i32 type);
 };
 }
 

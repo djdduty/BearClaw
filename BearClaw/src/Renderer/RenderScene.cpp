@@ -9,15 +9,18 @@ RenderScene::RenderScene()
 
 RenderScene::~RenderScene()
 {
-
+	while (m_Children.size() > 0)
+	{
+		RemoveChild(m_Children.begin()->first);
+	}
 }
 
-StrongRenderNodePtr RenderScene::AddChild(RenderNode* Node)
+RenderNode* RenderScene::AddChild(RenderNode* Node)
 {
     if(Node != nullptr)
     {
-        BcString Key = Node->GetHandle();
-        StrongRenderNodePtr ChildPtr(Node);
+		string Key = Node->GetHandle();
+        RenderNode* ChildPtr = Node;
         m_Children.insert(std::make_pair(Key, ChildPtr));
         ChildPtr->InitRenderNode();
 
@@ -28,18 +31,17 @@ StrongRenderNodePtr RenderScene::AddChild(RenderNode* Node)
 
         return ChildPtr;
     }
-    else
-    {
-        return StrongRenderNodePtr();
-    }
+	
+	return nullptr;
 }
 
 void RenderScene::Init()
 {}
 
-void RenderScene::RemoveChild(BcString Name)
+void RenderScene::RemoveChild(string Name)
 {
-    m_Children.erase(Name);
+	RenderNode* N = FindChild(Name);
+	m_Children.erase(Name);
 }
 
 void RenderScene::SetActiveCamera(BcCamera* Cam)
@@ -79,5 +81,16 @@ void RenderScene::Disable()
 bool RenderScene::IsEnabled()
 {
     return m_Enabled;
+}
+
+RenderNode* RenderScene::FindChild(string Name)
+{
+	for (RenderNodes::iterator it = m_Children.begin(); it != m_Children.end(); it++)
+	{
+		if (it->first == Name)
+			return it->second;
+	}
+
+	return nullptr;
 }
 }
