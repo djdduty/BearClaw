@@ -81,6 +81,16 @@ inline Vec3 operator*(const Vec3& l, f32 f)
 
     return Ret;
 }
+
+inline bool operator>(const Vec3& l, const Vec3& r)
+{
+	return (l.x > r.x) && (l.y > r.y) && (l.z > r.z);
+}
+
+inline bool operator<(const Vec3& l, const Vec3& r)
+{
+	return (l.x < r.x) && (l.y < r.y) && (l.z < r.z);
+}
 }
 
 #endif

@@ -15,10 +15,11 @@ namespace BcGame {
 class MainState : public State
 {
 private:
-    CameraComponent* m_CamComp;
     Scene* m_Scene;
 	bool m_SceneUnset;
 	KeyFunc m_KeyFunction;
+	MouseMoveFunc m_MouseFunc;
+	SceneNode* m_CamNode;
 
 public:
     MainState();
@@ -31,6 +32,7 @@ public:
     void Update(f64 DeltaTime);
 
 	void KeyCallback(char button, Action_Type Type);
+	void OnMouseMove(f64 x, f64 y);
 
     //void KeyCallback(char button, Action_Type Type);
 };

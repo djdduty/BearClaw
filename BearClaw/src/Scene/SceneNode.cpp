@@ -18,7 +18,8 @@ SceneNode::SceneNode(string Name)
 	m_TransNeedsUpdate = true;
 	m_Transform = Mat4(1.0f);
 
-	m_BoundingBox = new AABoundingBox();
+	m_Modified = false;
+	m_BoundingBox = new AABoundingBox(Vec3(0,0,0), Vec3(0.1,0.1,0.1));
 }
 
 SceneNode::~SceneNode()
@@ -65,18 +66,20 @@ StrongNodePtr SceneNode::AddChild(SceneNode* Node)
 {
     if(Node)
     {
-		string Key = Node->GetName();
-        StrongNodePtr ChildPtr(Node);
-        m_Children.insert(std::make_pair(Key, ChildPtr));
-        ChildPtr->SetParent(this);
-        ChildPtr->Init();
+		if (OnChildAdd(Node)) {
+			string Key = Node->GetName();
+			StrongNodePtr ChildPtr(Node);
+			m_Children.insert(std::make_pair(Key, ChildPtr));
+			ChildPtr->SetParent(this);
+			ChildPtr->Init();
 
-        if(!m_Enabled)
-            ChildPtr->Disable();
-        else
-            ChildPtr->Enable();
+			if (!m_Enabled)
+				ChildPtr->Disable();
+			else
+				ChildPtr->Enable();
 
-        return FindChild(Key, false);
+			return FindChild(Key, false);
+		}
     }
     else
     {
@@ -215,6 +218,7 @@ void SceneNode::Update(f64 DeltaTime)
 		m_TransNeedsUpdate = false;
 	}
 
+	m_BoundingBox->Draw();
 	OnUpdate(DeltaTime);
 }
 

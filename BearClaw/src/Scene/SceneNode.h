@@ -22,6 +22,7 @@ private:
     bool        m_IsUpdatingAfterChange;// = false;
     bool        m_ShouldDie;//             = false;
     bool        m_ParentHasBeenSet;//      = false;
+	bool		m_Modified;//			   = false; This is so the Octree knows when to update the node.
 
 protected:
     uid         m_Id;
@@ -106,22 +107,23 @@ public:
 
     //Setters
     void SetParent(SceneNode* Parent);
-	void Translate(Vec3 Pos)			{ m_Position += Pos; m_TransNeedsUpdate = true;									}
-	void Rotate(Vec3 Rot)				{ m_Rotation += Rot; m_TransNeedsUpdate = true;									}
-	void SetAABB(AABoundingBox* AABB)	{ if (AABB != nullptr){ delete m_BoundingBox; m_BoundingBox = AABB; }			}
-	void SetAABB(VertexList Verts)		{ delete m_BoundingBox; m_BoundingBox = new AABoundingBox(m_Position, Verts);	}
+	void Translate(Vec3 Pos)			{ m_Position += Pos; m_TransNeedsUpdate = true;	m_BoundingBox->Origin += Pos; m_Modified = true;	}
+	void Rotate(Vec3 Rot)				{ m_Rotation += Rot; m_TransNeedsUpdate = true;														}
+	void SetAABB(AABoundingBox* AABB)	{ if (AABB != nullptr){delete m_BoundingBox;} m_BoundingBox = AABB; m_Modified = true;				}
+	void SetAABB(VertexList Verts)		{ delete m_BoundingBox; m_BoundingBox = new AABoundingBox(m_Position, Verts); m_Modified = true;	}
     //
 
     //Getters
-    SceneNode* GetParent();
 	string GetName();
-    virtual Scene* GetScene();
     bool GetEnabled();
-	inline Vec3 GetPosition()	{ return m_Position;	}
-	inline Vec3 GetRotation()	{ return m_Rotation;	}
-	inline uid GetID()			{ return m_Id;			}
-	inline Mat4 GetTransform()	{ return m_Transform;	}
-	AABoundingBox* GetAABB()	{ return m_BoundingBox; }
+    SceneNode* GetParent();
+    virtual Scene* GetScene();
+	inline inline Vec3 GetPosition()	{ return m_Position;	}
+	inline inline Vec3 GetRotation()	{ return m_Rotation;	}
+	inline inline uid GetID()			{ return m_Id;			}
+	inline inline Mat4 GetTransform()	{ return m_Transform;	}
+	inline AABoundingBox* GetAABB()		{ return m_BoundingBox; }
+	inline bool GetModified()			{ return m_Modified;	}
 	//
 
     //virtual misc
@@ -131,11 +133,13 @@ public:
     virtual void OnDisable();
 	virtual void OnUpdate(f64 DeltaTime);
     virtual void Update(f64 DeltaTime);
+	virtual bool OnChildAdd(SceneNode* Node) { return true; }
     //
 
 	//hacky hacky
 	void Action(i32 type);
 	virtual void OnAction(i32 type);
+	void ResolveModification() { m_Modified = false; }
 };
 }
 

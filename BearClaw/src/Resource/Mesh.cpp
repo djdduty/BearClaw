@@ -4,7 +4,7 @@
 namespace BearClaw {
 Mesh::Mesh()
 {
-
+	m_RenderAsLines = false;
 }
 
 Mesh::~Mesh()
@@ -57,7 +57,10 @@ void Mesh::LoadMesh(VertexList V, IndexList I)
 void Mesh::Render()
 {
     glBindVertexArray(m_Vao);
-	glDrawElements(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, 0);
+	if (!m_RenderAsLines)
+		glDrawElements(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, 0);
+	else
+		glDrawElements(GL_LINES, IndexCount, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 

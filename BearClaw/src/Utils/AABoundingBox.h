@@ -5,6 +5,7 @@
 #include <Utils/Math/Vec3.h>
 #include <Resource/Mesh.h>
 #include <System/BcTypes.h>
+#include <Renderer/Material.h>
 
 namespace BearClaw {
 class AABoundingBox {
@@ -14,10 +15,10 @@ public:
 
 	AABoundingBox() : HalfDim(Vec3()), Origin(Vec3()), m_VboSet(false) {}
 
-	AABoundingBox(Vec3 Min, Vec3 Max) : m_VboSet(false)
+	AABoundingBox(Vec3 Min, Vec3 Max, Vec3 Pos) : m_VboSet(false)
 	{
 		HalfDim = Vec3(abs(Max.x - Min.x) / 2, abs(Max.y - Min.y) / 2, abs(Max.z - Min.z) / 2);
-		Origin = Max - HalfDim;
+		Origin = (Max - HalfDim) -= Pos;
 		SetupVBO();
 	}
 
@@ -40,11 +41,36 @@ public:
 		SetupVBO();
 	}
 
-	bool Contains(const AABoundingBox &Other) {
-		if (abs(Origin.x - Other.Origin.x) + Other.HalfDim.x >= HalfDim.x*2) return false;
-		if (abs(Origin.y - Other.Origin.y) + Other.HalfDim.y >= HalfDim.y*2) return false;
-		if (abs(Origin.z - Other.Origin.z) + Other.HalfDim.z >= HalfDim.z*2) return false;
+	AABoundingBox(Vec3 Position, Vec3 HalfDimensions) : Origin(Position), HalfDim(HalfDimensions) {
+		SetupVBO();
+	}
 
+	~AABoundingBox() {
+		if (m_VboSet) {
+			delete m_Material;
+			delete m_Mesh;
+		}
+	}
+
+	bool Contains(const AABoundingBox &Other) 
+	{
+		Vec3 OMin = Other.Origin - Other.HalfDim;
+		Vec3 OMax = Other.Origin + Other.HalfDim;
+		Vec3 Max = GetMax();
+		Vec3 Min = GetMin();
+		if ((OMin.x < Min.x) || (OMin.y < Min.y) || (OMin.z < Min.z)) return false;
+		if ((OMax.x > Max.x) || (OMax.y > Max.y) || (OMax.z > Max.z)) return false;
+		return true;
+	}
+
+	bool Contains(AABoundingBox* Other)
+	{
+		Vec3 OMin = Other->Origin - Other->HalfDim;
+		Vec3 OMax = Other->Origin + Other->HalfDim;
+		Vec3 Max = GetMax();
+		Vec3 Min = GetMin();
+		if ((OMin.x < Min.x) || (OMin.y < Min.y) || (OMin.z < Min.z)) return false;
+		if ((OMax.x > Max.x) || (OMax.y > Max.y) || (OMax.z > Max.z)) return false;
 		return true;
 	}
 
@@ -57,21 +83,79 @@ public:
 		return true;
 	}
 
+	bool Intersects(AABoundingBox* Other)
+	{
+		if (abs(Origin.x - Other->Origin.x) >= (HalfDim.x + Other->HalfDim.x)) return false;
+		if (abs(Origin.y - Other->Origin.y) >= (HalfDim.y + Other->HalfDim.y)) return false;
+		if (abs(Origin.z - Other->Origin.z) >= (HalfDim.z + Other->HalfDim.z)) return false;
+
+		return true;
+	}
+
 	void Draw() 
 	{
 		if (m_VboSet) {
-
+			Mat4 t = Mat4(Origin);
+			m_Material->Bind();
+			m_Material->PrepareForRender(t);
+			m_Mesh->Render();
+			m_Material->UnBind();
 		}
 	}
 
+	Material* m_Material;
 private:
-	GLuint m_Vbo;
+	Mesh* m_Mesh;
 	bool m_VboSet;
+
+	Vec3 GetMin() { return Origin - HalfDim; }
+	Vec3 GetMax() { return Origin + HalfDim; }
 
 protected:
 	void SetupVBO() 
 	{
-		m_VboSet = true;
+		m_Material = new Material();
+		m_Mesh = new Mesh();
+
+		Vec3 Verts[8];
+		Verts[0] = Vec3(HalfDim.x, HalfDim.y, HalfDim.z);
+		Verts[1] = Vec3(-HalfDim.x, HalfDim.y, HalfDim.z);
+		Verts[2] = Vec3(-HalfDim.x, HalfDim.y, -HalfDim.z);
+		Verts[3] = Vec3(HalfDim.x, HalfDim.y, -HalfDim.z);
+
+		Verts[4] = Vec3(HalfDim.x, -HalfDim.y, HalfDim.z);
+		Verts[5] = Vec3(-HalfDim.x, -HalfDim.y, HalfDim.z);
+		Verts[6] = Vec3(-HalfDim.x, -HalfDim.y, -HalfDim.z);
+		Verts[7] = Vec3(HalfDim.x, -HalfDim.y, -HalfDim.z);
+
+		VertexList VertsList = VertexList();
+		VertsList.push_back(Vertex(Verts[0], Vec3(), Vec2()));
+		VertsList.push_back(Vertex(Verts[1], Vec3(), Vec2()));
+		VertsList.push_back(Vertex(Verts[2], Vec3(), Vec2()));
+		VertsList.push_back(Vertex(Verts[3], Vec3(), Vec2()));
+		VertsList.push_back(Vertex(Verts[4], Vec3(), Vec2()));
+		VertsList.push_back(Vertex(Verts[5], Vec3(), Vec2()));
+		VertsList.push_back(Vertex(Verts[6], Vec3(), Vec2()));
+		VertsList.push_back(Vertex(Verts[7], Vec3(), Vec2()));
+
+		IndexList Indices = IndexList();
+		Indices.push_back(0); Indices.push_back(1);
+		Indices.push_back(1); Indices.push_back(2);
+		Indices.push_back(2); Indices.push_back(3);
+		Indices.push_back(3); Indices.push_back(0);
+
+		Indices.push_back(4); Indices.push_back(5);
+		Indices.push_back(5); Indices.push_back(6);
+		Indices.push_back(6); Indices.push_back(7);
+		Indices.push_back(7); Indices.push_back(4);
+
+		Indices.push_back(0); Indices.push_back(4);
+		Indices.push_back(1); Indices.push_back(5);
+		Indices.push_back(2); Indices.push_back(6);
+		Indices.push_back(3); Indices.push_back(7);
+
+		m_Mesh->LoadMesh(VertsList, Indices);
+		m_Mesh->SetDebug(true);
 	}
 };
 }

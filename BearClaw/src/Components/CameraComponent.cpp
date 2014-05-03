@@ -27,8 +27,10 @@ void CameraComponent::SetAsActiveCamera()
     m_Owner->GetScene()->GetRenderScene()->SetActiveCamera(m_Camera);
 }
 
-void CameraComponent::Update()
+void CameraComponent::Update(f64 DeltaTime)
 {
+	m_Camera->SetPosition(m_Owner->GetPosition()*-1);
+	m_Camera->SetRotation(m_Owner->GetRotation()*-1);
     m_Camera->Update();
 }
 

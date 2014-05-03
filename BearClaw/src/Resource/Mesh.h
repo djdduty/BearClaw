@@ -29,9 +29,10 @@ typedef std::vector<unsigned int> IndexList;
 class Mesh
 {
 private:
-    GLuint m_Vao;
-    GLuint m_Vbo;
-    GLuint m_Ibo;
+    GLuint	m_Vao;
+    GLuint	m_Vbo;
+    GLuint	m_Ibo;
+	bool	m_RenderAsLines;
 
 public:
     int IndexCount;
@@ -40,9 +41,16 @@ public:
     ~Mesh();
 
 	void DeInit();
+    void Render();
     void LoadMesh(VertexList VList, IndexList IList);
     VertexList CalculateTangents(VertexList VList, IndexList IList);
-    void Render();
+	
+	inline void SetDebug(bool d) {
+		if (d)
+			m_RenderAsLines = true;
+		else
+			m_RenderAsLines = false;
+	}
 };
 }
 #endif

@@ -13,7 +13,7 @@ public:
     //Constructor/Destructor and component functions
 	CameraComponent(string Name, bool IsPerspective);
     ~CameraComponent();
-    void Update();
+    void Update(f64 DeltaTime);
 
     //misc
     void SetAsActiveCamera();

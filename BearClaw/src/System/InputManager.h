@@ -255,8 +255,8 @@ public:
 
 	//Functions
 	void AddKeyDownFunction(KeyFunc KF) { m_KeyFunctions.push_back(KF); }
-	void AddKeyDownFunction(MouseMoveFunc MMF) { m_MouseMoveFunctions.push_back(MMF); }
-	void AddKeyDownFunction(MouseButtonFunc MBF) { m_MouseButtonFunctions.push_back(MBF); }
+	void AddMouseMoveFunction(MouseMoveFunc MMF) { m_MouseMoveFunctions.push_back(MMF); }
+	void AddMouseButtonFunction(MouseButtonFunc MBF) { m_MouseButtonFunctions.push_back(MBF); }
 
 	void RemoveKeyDownFunctions();
 	void RemoveMouseMoveFunctions();

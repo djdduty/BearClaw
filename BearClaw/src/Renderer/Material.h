@@ -27,6 +27,7 @@ private:
     bool m_UseDefaultShader;
     bool m_UseFontShader;
 	bool m_IsBillboard;
+	bool m_HasOwner;
 
     string m_VertShader;//todo: add setter
     string m_FragShader;//todo: add setter
@@ -55,6 +56,7 @@ private:
 	GLuint m_UVMultLoc;
 
 public:
+	Material();
     Material(RenderNode* Owner);
     Material(RenderNode* Owner, string DiffuseTex);
     Material(RenderNode* Owner, Vec4 DiffuseColor);
@@ -80,7 +82,7 @@ public:
     void Bind();
     void Update();
     void UpdateShader();
-    void PrepareForRender();
+	void PrepareForRender(Mat4 AlternateTrans = Mat4(1.0f));
     HLShaderWrapper* GetShader();
 
     void Save(string Path);

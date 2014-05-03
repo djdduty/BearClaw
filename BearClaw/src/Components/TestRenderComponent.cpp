@@ -24,7 +24,7 @@ void TestRenderComponent::OnInit()
 void TestRenderComponent::InitRenderNode()
 {
 	VertexList Verts = VertexList();
-	Verts = GetSphereVerts(0.5, 32, 64);
+	Verts = GetSphereVerts(0.2, 32, 64);
 	IndexList Indices = IndexList();
 	Indices = GetSphereIndices(32, 64);
 

@@ -38,8 +38,6 @@ void InputManager::RemoveKeyDownCB(KeyCB CB)
     }
 }
 
-
-
 void InputManager::RemoveMouseMoveCB(MouseMoveCB CB)
 {
     for(i32 i = 0;i < m_MouseMoveCBs.size();i++)
@@ -75,8 +73,21 @@ void InputManager::RemoveKeyDownFunctions()
 }
 
 
-void InputManager::RemoveMouseMoveFunctions() {}
-void InputManager::RemoveMouseButtconFunctions() {}
+void InputManager::RemoveMouseMoveFunctions() {
+	for (i32 i = 0; i < m_MouseMoveFunctions.size(); i++)
+	{
+		m_MouseMoveFunctions.erase(m_MouseMoveFunctions.begin() + i);
+
+	}
+}
+
+void InputManager::RemoveMouseButtconFunctions() {
+	for (i32 i = 0; i < m_MouseButtonFunctions.size(); i++)
+	{
+		m_MouseButtonFunctions.erase(m_MouseButtonFunctions.begin() + i);
+
+	}
+}
 
 void InputManager::OnKeyDown(char Key, Action_Type Action)
 {

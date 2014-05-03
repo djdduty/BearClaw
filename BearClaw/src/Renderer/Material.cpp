@@ -3,16 +3,17 @@
 #include <Renderer/RenderNode.h>
 
 namespace BearClaw {
-Material::Material(RenderNode* Owner)                                                                       : m_DiffuseColor(Vec4(1,1,1,1)), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(""),         m_NormalTex(""),        m_Specular(-1.0),     m_HasDiffuseMap(false), m_HasNormalMap(false), m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
-Material::Material(RenderNode* Owner, string DiffuseTex)                                                    : m_DiffuseColor(Vec4(1,1,1,1)), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(DiffuseTex), m_NormalTex(""),        m_Specular(-1.0),     m_HasDiffuseMap(true),  m_HasNormalMap(false), m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
-Material::Material(RenderNode* Owner, string DiffuseTex, string NormalTex)                                  : m_DiffuseColor(Vec4(1,1,1,1)), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(DiffuseTex), m_NormalTex(NormalTex), m_Specular(-1.0),     m_HasDiffuseMap(true),  m_HasNormalMap(true),  m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
-Material::Material(RenderNode* Owner, Vec4 DiffuseColor)                                                    : m_DiffuseColor(DiffuseColor),  m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(""),         m_NormalTex(""),        m_Specular(-1.0),     m_HasDiffuseMap(false), m_HasNormalMap(false), m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
-Material::Material(RenderNode* Owner, Vec4 DiffuseColor, string DiffuseTex)                                 : m_DiffuseColor(DiffuseColor),  m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(DiffuseTex), m_NormalTex(""),        m_Specular(-1.0),     m_HasDiffuseMap(true),  m_HasNormalMap(false), m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
-Material::Material(RenderNode* Owner, Vec4 DiffuseColor, string DiffuseTex, string NormalTex)               : m_DiffuseColor(DiffuseColor),  m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(DiffuseTex), m_NormalTex(NormalTex), m_Specular(-1.0),     m_HasDiffuseMap(true),  m_HasNormalMap(true),  m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
-Material::Material(RenderNode* Owner, f32 Specular)                                                         : m_DiffuseColor(Vec4(1,1,1,1)), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(""),         m_NormalTex(""),        m_Specular(Specular), m_HasDiffuseMap(false), m_HasNormalMap(false), m_HasSpecular(true),  m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
-Material::Material(RenderNode* Owner, f32 Specular, Vec4 DiffuseColor)                                      : m_DiffuseColor(DiffuseColor),  m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(""),         m_NormalTex(""),        m_Specular(Specular), m_HasDiffuseMap(false), m_HasNormalMap(false), m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
-Material::Material(RenderNode* Owner, f32 Specular, Vec4 DiffuseColor, string DiffuseTex)                   : m_DiffuseColor(DiffuseColor),  m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(DiffuseTex), m_NormalTex(""),        m_Specular(Specular), m_HasDiffuseMap(true),  m_HasNormalMap(false), m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
-Material::Material(RenderNode* Owner, f32 Specular, Vec4 DiffuseColor, string DiffuseTex, string NormalTex) : m_DiffuseColor(DiffuseColor),  m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(DiffuseTex), m_NormalTex(NormalTex), m_Specular(Specular), m_HasDiffuseMap(true),  m_HasNormalMap(true),  m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
+Material::Material()																						: m_DiffuseColor(Vec4(1,1,1,1)), m_HasOwner(false), m_IsBillboard(false), m_UVAdd(Vec2(0, 0)), m_DiffuseTex(""),	   m_NormalTex(""), m_Specular(-1.0), m_HasDiffuseMap(false), m_HasNormalMap(false), m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(nullptr), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
+Material::Material(RenderNode* Owner)                                                                       : m_DiffuseColor(Vec4(1,1,1,1)), m_HasOwner(true), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(""),         m_NormalTex(""),        m_Specular(-1.0),     m_HasDiffuseMap(false), m_HasNormalMap(false), m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
+Material::Material(RenderNode* Owner, string DiffuseTex)                                                    : m_DiffuseColor(Vec4(1,1,1,1)), m_HasOwner(true), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(DiffuseTex), m_NormalTex(""),        m_Specular(-1.0),     m_HasDiffuseMap(true),  m_HasNormalMap(false), m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
+Material::Material(RenderNode* Owner, string DiffuseTex, string NormalTex)                                  : m_DiffuseColor(Vec4(1,1,1,1)), m_HasOwner(true), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(DiffuseTex), m_NormalTex(NormalTex), m_Specular(-1.0),     m_HasDiffuseMap(true),  m_HasNormalMap(true),  m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
+Material::Material(RenderNode* Owner, Vec4 DiffuseColor)                                                    : m_DiffuseColor(DiffuseColor),  m_HasOwner(true), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(""),         m_NormalTex(""),        m_Specular(-1.0),     m_HasDiffuseMap(false), m_HasNormalMap(false), m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
+Material::Material(RenderNode* Owner, Vec4 DiffuseColor, string DiffuseTex)                                 : m_DiffuseColor(DiffuseColor),  m_HasOwner(true), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(DiffuseTex), m_NormalTex(""),        m_Specular(-1.0),     m_HasDiffuseMap(true),  m_HasNormalMap(false), m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
+Material::Material(RenderNode* Owner, Vec4 DiffuseColor, string DiffuseTex, string NormalTex)               : m_DiffuseColor(DiffuseColor),  m_HasOwner(true), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(DiffuseTex), m_NormalTex(NormalTex), m_Specular(-1.0),     m_HasDiffuseMap(true),  m_HasNormalMap(true),  m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
+Material::Material(RenderNode* Owner, f32 Specular)                                                         : m_DiffuseColor(Vec4(1,1,1,1)), m_HasOwner(true), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(""),         m_NormalTex(""),        m_Specular(Specular), m_HasDiffuseMap(false), m_HasNormalMap(false), m_HasSpecular(true),  m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
+Material::Material(RenderNode* Owner, f32 Specular, Vec4 DiffuseColor)                                      : m_DiffuseColor(DiffuseColor),  m_HasOwner(true), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(""),         m_NormalTex(""),        m_Specular(Specular), m_HasDiffuseMap(false), m_HasNormalMap(false), m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
+Material::Material(RenderNode* Owner, f32 Specular, Vec4 DiffuseColor, string DiffuseTex)                   : m_DiffuseColor(DiffuseColor),  m_HasOwner(true), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(DiffuseTex), m_NormalTex(""),        m_Specular(Specular), m_HasDiffuseMap(true),  m_HasNormalMap(false), m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
+Material::Material(RenderNode* Owner, f32 Specular, Vec4 DiffuseColor, string DiffuseTex, string NormalTex) : m_DiffuseColor(DiffuseColor),  m_HasOwner(true), m_IsBillboard(false), m_UVAdd(Vec2(0,0)), m_DiffuseTex(DiffuseTex), m_NormalTex(NormalTex), m_Specular(Specular), m_HasDiffuseMap(true),  m_HasNormalMap(true),  m_HasSpecular(false), m_FlagsNeedUpdate(true), m_Owner(Owner), m_UseDefaultShader(true), m_VertShader(""), m_FragShader(""), m_UseFontShader(false){}
 
 Material::~Material() 
 {
@@ -123,20 +124,25 @@ void Material::UpdateShader()
     m_DiffuseColorLoc = m_Shader->GetUniformLocation("DiffuseColor");
 }
 
-void Material::PrepareForRender()
+void Material::PrepareForRender(Mat4 AlternateTrans)
 {
     if(m_Shader != nullptr)
         m_Shader->Enable();
 
     if(!m_UseFontShader)
     {
-        Mat4 Model = m_Owner->GetTransform();
+		Mat4 Model;
+		if (m_HasOwner)
+			Model = m_Owner->GetTransform();
+		else
+			Model = AlternateTrans;
+
         Mat4 View = RenderSingleton->GetRenderScene()->GetActiveCamera()->GetTransform();
 
         Mat4 Projection = RenderSingleton->GetRenderScene()->GetActiveCamera()->GetProjection();
 
         Mat4 ModelView = Model * View;
-		if (m_IsBillboard) {
+		if (m_IsBillboard && m_HasOwner) {
 			Vec3 MPos = m_Owner->GetNode()->GetPosition();
 			Vec3 CamPos = RenderSingleton->GetRenderScene()->GetActiveCamera()->GetPosition();
 			Vec3 look = (MPos + CamPos).Normalize();
