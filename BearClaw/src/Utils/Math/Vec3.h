@@ -11,7 +11,7 @@ class Mat4;
 class Vec3
 {
 public:
-    f32   x,y,z;
+    f32 x,y,z;
 
     Vec3()                          {x = 0.0f; y = 0.0f; z = 0.0f;              }
     Vec3(f32 n)                     {x = n; y = n; z = n;                       }

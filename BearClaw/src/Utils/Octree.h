@@ -150,7 +150,7 @@ public:
 					//BC_LOG("Child node updating\n");
 				}
 
-		Draw();
+        Draw();
 		if (Data.size() == 0 && m_HasParent) {
 			m_Parent->Merge();
 			return;

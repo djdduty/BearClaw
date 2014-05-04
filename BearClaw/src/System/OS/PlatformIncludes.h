@@ -25,7 +25,7 @@
 #include <memory>
 
 #ifdef __linux__
-#include <tr1/memory>
+#include <memory>
 #else
 #include <memory>
 #endif

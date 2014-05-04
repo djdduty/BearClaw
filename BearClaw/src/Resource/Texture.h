@@ -5,11 +5,6 @@
 #include <Utils/BcString.h>
 #include <string>
 
-#ifdef __APPLE__
-	#include <tr1/memory>
-#endif
-
-using namespace std::tr1;
 namespace BearClaw {
 class Texture
 {

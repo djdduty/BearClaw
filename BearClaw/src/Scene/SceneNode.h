@@ -5,8 +5,7 @@
 #include <Scene/Component.h>
 #include <Utils/Math.h>
 #include <map>
-
-using namespace std::tr1;
+#include <System/Interfaces.h>
 
 namespace BearClaw {
 class Scene;
@@ -109,8 +108,8 @@ public:
     void SetParent(SceneNode* Parent);
 	void Translate(Vec3 Pos)			{ m_Position += Pos; m_TransNeedsUpdate = true;	m_BoundingBox->Origin += Pos; m_Modified = true;	}
 	void Rotate(Vec3 Rot)				{ m_Rotation += Rot; m_TransNeedsUpdate = true;														}
-	void SetAABB(AABoundingBox* AABB)	{ if (AABB != nullptr){delete m_BoundingBox;} m_BoundingBox = AABB; m_Modified = true;				}
-	void SetAABB(VertexList Verts)		{ delete m_BoundingBox; m_BoundingBox = new AABoundingBox(m_Position, Verts); m_Modified = true;	}
+    void SetAABB(AABoundingBox* AABB)	{ delete m_BoundingBox; m_BoundingBox = AABB; m_Modified = true;                                    }
+    void SetAABB(VertexList Verts)		{ delete m_BoundingBox; m_BoundingBox = new AABoundingBox(m_Position, Verts); m_Modified = true;	}
     //
 
     //Getters
@@ -118,10 +117,10 @@ public:
     bool GetEnabled();
     SceneNode* GetParent();
     virtual Scene* GetScene();
-	inline inline Vec3 GetPosition()	{ return m_Position;	}
-	inline inline Vec3 GetRotation()	{ return m_Rotation;	}
-	inline inline uid GetID()			{ return m_Id;			}
-	inline inline Mat4 GetTransform()	{ return m_Transform;	}
+    inline Vec3 GetPosition()           { return m_Position;	}
+    inline Vec3 GetRotation()           { return m_Rotation;	}
+    inline uid GetID()                  { return m_Id;			}
+    inline Mat4 GetTransform()          { return m_Transform;	}
 	inline AABoundingBox* GetAABB()		{ return m_BoundingBox; }
 	inline bool GetModified()			{ return m_Modified;	}
 	//

@@ -45,7 +45,7 @@ void TextureManager::UpdateTextures()
         if (it->second.use_count() == 1)
         {
             string path = it->first.c_str();
-            BC_LOG("No references for %s",path);
+            BC_LOG("No references for texture\n");
         }
     }
 }

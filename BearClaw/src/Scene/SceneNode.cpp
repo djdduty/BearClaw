@@ -218,7 +218,7 @@ void SceneNode::Update(f64 DeltaTime)
 		m_TransNeedsUpdate = false;
 	}
 
-	m_BoundingBox->Draw();
+    m_BoundingBox->Draw();
 	OnUpdate(DeltaTime);
 }
 

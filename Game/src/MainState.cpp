@@ -34,16 +34,16 @@ void MainState::Init(StateManager* Manager)
     m_CamNode->Translate(Vec3(0,0,1));
 
 	i32 num = 0;
-	for (i32 i = 0; i < 6; i++) {
-		for (i32 y = 0; y < 6; y++) {
-			for (i32 z = 0; z < 6; z++) {
-				Vec3 Pos = Vec3(i + 0.7, y+0.5, z + 1);
+    for (i32 i = 0; i < 1; i++) {
+        for (i32 y = 0; y < 2; y++) {
+            for (i32 z = 0; z < 1; z++) {
+                Vec3 Pos = Vec3(i, y, z);
 				ostringstream ss;
 				ss << num++;
 				SceneNode* Node = new SceneNode("RenderNode" + ss.str());
 				m_Scene->AddChild(Node);
 				TestRenderComponent* tc = new TestRenderComponent("RenderNode-RenderComp" + ss.str());
-				tc->GetMaterial()->SetDiffuseTex("Data/Textures/Checker.png");
+                tc->GetMaterial()->SetDiffuseTex("Data/Textures/checker.png");
 				Node->AddComponent(tc);
 				Node->Translate(Pos*0.9);
 			}
