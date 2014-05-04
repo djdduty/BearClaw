@@ -146,8 +146,7 @@ public:
 		if (m_IsLeafNode == false)
 			for (i32 i = 0; i < 8; i++) 
 				if (m_IsLeafNode == false) {
-					m_Children[i]->Update();
-					//BC_LOG("Child node updating\n");
+                    m_Children[i]->Update();
 				}
 
         Draw();

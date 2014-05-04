@@ -15,7 +15,7 @@ Scene::~Scene()
 
 bool Scene::OnChildAdd(SceneNode* Node) {
 	if (m_BoundingBox->Contains(Node->GetAABB())) {
-        //m_Octree->Insert(Node);
+        m_Octree->Insert(Node);
 		return true;
 	}
 

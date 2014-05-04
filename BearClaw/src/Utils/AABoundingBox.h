@@ -100,7 +100,8 @@ public:
 			m_Material->PrepareForRender(t);
 			m_Mesh->Render();
 			m_Material->UnBind();
-		}
+            return;
+        }
 	}
 
 	Material* m_Material;
@@ -155,7 +156,8 @@ protected:
 		Indices.push_back(3); Indices.push_back(7);
 
 		m_Mesh->LoadMesh(VertsList, Indices);
-		m_Mesh->SetDebug(true);
+        m_Mesh->SetDebug(true);
+        m_VboSet = true;
 	}
 };
 }

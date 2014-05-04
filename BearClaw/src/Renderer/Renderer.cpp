@@ -67,6 +67,10 @@ Renderer::~Renderer(){}
 void Renderer::Init()
 {
     SetupShaders();
+    GLenum err;
+    while ((err = glGetError()) != GL_NO_ERROR) {
+        std::cout << "@Renderer, GL error while setting up shaders: " << err << std::endl;
+    }
 }
 
 void Renderer::SetupShaders()
@@ -92,7 +96,7 @@ void Renderer::SetupShaders()
     ShaderFlags* FlagsFont = new ShaderFlags();
     FlagsFont->FontShader = true;
     HLShaderWrapper* ShaderFont = new HLShaderWrapper("Data/Shaders/FontShader.vert", "Data/Shaders/FontShader.frag", FlagsFont);
-    
+
     ShaderFont->Enable();
     ShaderFont->SetProgramOutput(0, "FragColor");
     ShaderFont->SetVertexAttrib(ShaderProgram::TEXTURE_COORD_ATTRIB, "Texcoord");
