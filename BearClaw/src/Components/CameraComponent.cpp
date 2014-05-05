@@ -44,22 +44,22 @@ void CameraComponent::Translate(Vec3 Trans)
     m_Camera->Translate(Trans);
 }
 
-Mat4& CameraComponent::GetTransform()
+Mat4 CameraComponent::GetTransform()
 {
     return m_Camera->GetTransform();
 }
 
-Mat4& CameraComponent::GetProjection()
+Mat4 CameraComponent::GetProjection()
 {
     return m_Camera->GetProjection();
 }
 
-Vec3& CameraComponent::GetPosition()
+Vec3 CameraComponent::GetPosition()
 {
     return m_Camera->GetPosition();
 }
 
-Vec3& CameraComponent::GetRotation()
+Vec3 CameraComponent::GetRotation()
 {
     return m_Camera->GetRotation();
 }

@@ -67,6 +67,10 @@ Renderer::~Renderer(){}
 void Renderer::Init()
 {
     SetupShaders();
+    GLenum err;
+     while ((err = glGetError()) != GL_NO_ERROR) {
+        BC_LOG("@Renderer, GL error while setting up shaders: %d\n", err);
+     }
 }
 
 void Renderer::SetupShaders()

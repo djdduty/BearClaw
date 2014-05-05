@@ -4,7 +4,7 @@
 #include <System/OS/PlatformIncludes.h>
 
 
-using namespace std::tr1;                               //Shared pointers without c++11 for msvc support
+using namespace std;                               //Shared pointers without c++11 for msvc support
 
 namespace BearClaw {
 

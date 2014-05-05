@@ -24,11 +24,7 @@
 #include <Utils/EngineMacros.h>
 #include <memory>
 
-#ifdef __linux__
-#include <tr1/memory>
-#else
 #include <memory>
-#endif
 
 #include <malloc.h>
 

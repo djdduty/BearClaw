@@ -93,8 +93,8 @@ public:
 				m_Children[i] = new Octree(ChildOrigin, BoundingBox.HalfDim * 0.5, this, true);
 			}
 
-			std::vector<SceneNode*> DataCopy = Data;
-			Data.clear();
+            std::vector<SceneNode*> DataCopy = std::move(Data);
+            //Data.clear();
 			for (i32 i = 0; i < DataCopy.size(); i++) {
 				Insert(DataCopy[i]);
 			}
