@@ -20,7 +20,7 @@ public:
 	AABoundingBox BoundingBox;
 	std::vector<SceneNode*> Data;
 	
-    Octree(Vec3 Origin, Vec3 HalfDim, Octree* Parent = nullptr, bool HasParent = false, i32 MaxObj = 5, i32 MinObj = 1) : BoundingBox(Origin, HalfDim)
+    Octree(Vec3 Origin, Vec3 HalfDim, Octree* Parent = nullptr, bool HasParent = false, i32 MaxObj = 6, i32 MinObj = 1) : BoundingBox(Origin, HalfDim)
 	{
 		m_MaxObjectsPerNode = MaxObj;
 		m_MinObjectsPerNode = MinObj;
@@ -55,23 +55,24 @@ public:
 
 	bool Insert(SceneNode* Node)
 	{
-		if (!BoundingBox.Contains(Node->GetAABB()) && m_HasParent)
-			return false;
+        if (!BoundingBox.Contains(Node->GetAABB()) && m_HasParent)
+            return false;
 
 		if (Data.size() >= m_MaxObjectsPerNode && m_IsLeafNode) {
-			Split();
-			BC_LOG("Do I get here?\n");
+            Split();
 		}
 
 		if (m_IsLeafNode) {
 			Data.push_back(Node);
+            BC_LOG("Node %s inserted...\n", Node->GetName().c_str());
 			return true;
 		}
 
 		i32 i = OctantContainingPoint(Node->GetAABB()->Origin);
-		if (m_Children[i]->Insert(Node) == false)
+        if (m_Children[i]->Insert(Node) == false) {
 			Data.push_back(Node);
-
+            BC_LOG("Node %s inserted...\n", Node->GetName().c_str());
+        }
 		return true;
 	}
 
@@ -89,9 +90,7 @@ public:
 
             std::vector<SceneNode*> DataCopy = std::move(Data);
 			for (i32 i = 0; i < DataCopy.size(); i++) {
-				i32 n = OctantContainingPoint(DataCopy[i]->GetAABB()->Origin);
-				m_Children[n]->Insert(DataCopy[i]);
-					//Data.push_back(DataCopy[i]);
+                Insert(DataCopy[i]);
 			}
 		}
 	}
@@ -107,8 +106,7 @@ public:
 			for (i32 i = 0; i < 8; i++) {
 				delete m_Children[i];
 			}
-			m_IsLeafNode = true;
-			BC_LOG("Merged octant...\n");
+            m_IsLeafNode = true;
 		}
 	}
 
@@ -142,11 +140,12 @@ public:
 		}
 
 		std::vector<SceneNode*> ReinsertList = std::vector<SceneNode*>();
-		for (i32 i = Data.size(); i > 0; --i) {
-			if (Data[i-1]->GetModified()) {
-				Data[i-1]->ResolveModification();
-				ReinsertList.push_back(Data[i-1]);
-				Data.erase(Data.begin() + i-1);
+        for (i32 i = Data.size()-1; i >= 0; --i) {
+            if (Data[i]->GetModified()) {
+                Data[i]->ResolveModification();
+                ReinsertList.push_back(Data[i]);
+                Data.erase(Data.begin() + i);
+                BC_LOG("Node %s moved...\n", Data[i]->GetName().c_str());
 			}
 		}
 

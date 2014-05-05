@@ -36,8 +36,8 @@ void MainState::Init(StateManager* Manager)
 	i32 num = 0;
 	for (i32 i = 0; i < 6; i++) {
 		for (i32 y = 0; y < 6; y++) {
-			for (i32 z = 0; z < 1; z++) {
-                Vec3 Pos = Vec3(i + 0.7, y + 0.5, z + 1);
+            for (i32 z = 0; z < 6; z++) {
+                Vec3 Pos = Vec3(rand() %12-6, rand() %12-6, rand() %12-6);
 				ostringstream ss;
 				ss << num++;
 				SceneNode* Node = new SceneNode("RenderNode" + ss.str());
@@ -119,14 +119,6 @@ void MainState::Update(f64 DeltaTime)
 
 	if (Changed)
 		m_CamNode->Translate(Delta);
-
-	f64 Time = BCGetTimeInMS();
-	std::vector<SceneNode*> Nodes;
-	m_Scene->GetOctree()->GetNodesNearPosition(Vec3(4.7*0.9, 0.5, 0), Nodes, 3);
-	for (i32 i = 0; i < Nodes.size(); i++) {
-		Nodes[i]->GetAABB()->m_Material->SetDiffuseColor(Vec4(0, 1, 0, 1));
-	}
-	//BC_LOG("Time %f\n", BCGetTimeInMS() - Time);
 }
 
 void MainState::OnMouseMove(double x, double y) {

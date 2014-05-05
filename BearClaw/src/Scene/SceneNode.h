@@ -107,10 +107,10 @@ public:
 
     //Setters
     void SetParent(SceneNode* Parent);
-	void Translate(Vec3 Pos)			{ m_Position += Pos; m_TransNeedsUpdate = true;	m_BoundingBox->Origin += Pos; m_Modified = true;	}
-	void Rotate(Vec3 Rot)				{ m_Rotation += Rot; m_TransNeedsUpdate = true;														}
-	void SetAABB(AABoundingBox* AABB)	{ if (AABB != nullptr){delete m_BoundingBox;} m_BoundingBox = AABB; m_Modified = true;				}
-	void SetAABB(VertexList Verts)		{ delete m_BoundingBox; m_BoundingBox = new AABoundingBox(m_Position, Verts); m_Modified = true;	}
+    void Translate(Vec3 Pos)			{ m_Position += Pos; m_TransNeedsUpdate = true;	m_BoundingBox->Origin += Pos; m_Modified = true;                    }
+    void Rotate(Vec3 Rot)				{ m_Rotation += Rot; m_TransNeedsUpdate = true;                                                                     }
+    void SetAABB(AABoundingBox* AABB)	{ if (AABB != nullptr){delete m_BoundingBox;} m_BoundingBox = AABB; m_Modified = true;                              }
+    void SetAABB(VertexList Verts)		{ delete m_BoundingBox; m_BoundingBox = new AABoundingBox(m_Position, Verts); m_Modified = true;                    }
     //
 
     //Getters
