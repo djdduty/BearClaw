@@ -20,7 +20,7 @@ public:
 	AABoundingBox BoundingBox;
 	std::vector<SceneNode*> Data;
 	
-	Octree(Vec3 Origin, Vec3 HalfDim, Octree* Parent = nullptr, bool HasParent = false, i32 MaxObj = 9, i32 MinObj = 1) : BoundingBox(Origin, HalfDim) 
+    Octree(Vec3 Origin, Vec3 HalfDim, Octree* Parent = nullptr, bool HasParent = false, i32 MaxObj = 5, i32 MinObj = 1) : BoundingBox(Origin, HalfDim)
 	{
 		m_MaxObjectsPerNode = MaxObj;
 		m_MinObjectsPerNode = MinObj;
@@ -28,11 +28,7 @@ public:
 		Data = std::vector<SceneNode*>();
 		m_Parent = Parent;
 		m_HasParent = HasParent;
-		m_IsLeafNode = true;
-
-		for (i32 i = 0; i < 8; i++) {
-			m_Children[i] = NULL;
-		}
+        m_IsLeafNode = true;
 	}
 
 	~Octree() 
@@ -62,7 +58,7 @@ public:
 		if (!BoundingBox.Contains(Node->GetAABB()) && m_HasParent)
 			return false;
 
-		if (IsLeafNode()) {
+        if (!m_IsLeafNode) {
 			if (Data.size() < m_MaxObjectsPerNode) {
 				Data.push_back(Node);
 				return true;
@@ -74,7 +70,7 @@ public:
 		} else {
 			i32 i = OctantContainingPoint(Node->GetAABB()->Origin);
 			if (m_Children[i]->Insert(Node) == false){
-				Data.push_back(Node);
+                Data.push_back(Node);
 				//BC_LOG("Node overlapping octree boundary\n");
 				return true;
 			}
@@ -94,7 +90,6 @@ public:
 			}
 
             std::vector<SceneNode*> DataCopy = std::move(Data);
-            //Data.clear();
 			for (i32 i = 0; i < DataCopy.size(); i++) {
 				Insert(DataCopy[i]);
 			}
@@ -125,7 +120,7 @@ public:
 		for (i32 i = 0; i < Data.size(); i++) {
 			Vec3 HalfDim = Data[i]->GetAABB()->HalfDim;
 			f32 MaxDim = max(max(HalfDim.x, HalfDim.y), HalfDim.z);
-			if ((Data[i]->GetAABB()->Origin - Pos).LengthSquared() <= (MaxDim + MaxDistance) * (MaxDim + MaxDistance))
+            if ((Data[i]->GetAABB()->Origin - Pos).LengthSquared() <= (MaxDim + MaxDistance) * (MaxDim + MaxDistance))
 				Results.push_back(Data[i]);
 		}
 
@@ -136,7 +131,7 @@ public:
 
 	void Update()
 	{
-		if (m_IsLeafNode == false)
+        if (!m_IsLeafNode)
 			for (i32 i = 0; i < 8; i++) 
 				if (m_IsLeafNode == false) {
 					m_Children[i]->Update();
