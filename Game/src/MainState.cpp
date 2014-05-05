@@ -126,7 +126,7 @@ void MainState::Update(f64 DeltaTime)
 	for (i32 i = 0; i < Nodes.size(); i++) {
 		Nodes[i]->GetAABB()->m_Material->SetDiffuseColor(Vec4(0, 1, 0, 1));
 	}
-	BC_LOG("Time %f\n", BCGetTimeInMS() - Time);
+	//BC_LOG("Time %f\n", BCGetTimeInMS() - Time);
 }
 
 void MainState::OnMouseMove(double x, double y) {

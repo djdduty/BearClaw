@@ -58,23 +58,21 @@ public:
 		if (!BoundingBox.Contains(Node->GetAABB()) && m_HasParent)
 			return false;
 
-        if (!m_IsLeafNode) {
-			if (Data.size() < m_MaxObjectsPerNode) {
-				Data.push_back(Node);
-				return true;
-			} else {
-				Split();
-				Insert(Node);
-				return true;
-			}
-		} else {
-			i32 i = OctantContainingPoint(Node->GetAABB()->Origin);
-			if (m_Children[i]->Insert(Node) == false){
-                Data.push_back(Node);
-				//BC_LOG("Node overlapping octree boundary\n");
-				return true;
-			}
+		if (Data.size() >= m_MaxObjectsPerNode && m_IsLeafNode) {
+			Split();
+			BC_LOG("Do I get here?\n");
 		}
+
+		if (m_IsLeafNode) {
+			Data.push_back(Node);
+			return true;
+		}
+
+		i32 i = OctantContainingPoint(Node->GetAABB()->Origin);
+		if (m_Children[i]->Insert(Node) == false)
+			Data.push_back(Node);
+
+		return true;
 	}
 
 	void Split() 
@@ -91,7 +89,9 @@ public:
 
             std::vector<SceneNode*> DataCopy = std::move(Data);
 			for (i32 i = 0; i < DataCopy.size(); i++) {
-				Insert(DataCopy[i]);
+				i32 n = OctantContainingPoint(DataCopy[i]->GetAABB()->Origin);
+				m_Children[n]->Insert(DataCopy[i]);
+					//Data.push_back(DataCopy[i]);
 			}
 		}
 	}
@@ -100,7 +100,7 @@ public:
 	{
 		if (!m_IsLeafNode) {
 			for (i32 i = 0; i < 8; i++) {
-				if (m_Children[i]->Data.size() > 0)
+				if (!m_Children[i]->HasZeroElements())
 					return;
 			}
 
@@ -108,6 +108,7 @@ public:
 				delete m_Children[i];
 			}
 			m_IsLeafNode = true;
+			BC_LOG("Merged octant...\n");
 		}
 	}
 
@@ -123,23 +124,19 @@ public:
             if ((Data[i]->GetAABB()->Origin - Pos).LengthSquared() <= (MaxDim + MaxDistance) * (MaxDim + MaxDistance))
 				Results.push_back(Data[i]);
 		}
-
-		//AABoundingBox AABB = AABoundingBox(Pos, Vec3(MaxDistance, MaxDistance, MaxDistance));
-		//AABB.m_Material->SetDiffuseColor(Vec4(1, 0, 0, 1));
-		//AABB.Draw();
 	}
 
 	void Update()
 	{
         if (!m_IsLeafNode)
 			for (i32 i = 0; i < 8; i++) 
-				if (m_IsLeafNode == false) {
+				if (!m_IsLeafNode) {
 					m_Children[i]->Update();
 					//BC_LOG("Child node updating\n");
 				}
 
 		Draw();
-		if (Data.size() == 0 && m_HasParent) {
+		if (m_HasParent && HasZeroElements()) {
 			m_Parent->Merge();
 			return;
 		}
@@ -159,8 +156,6 @@ public:
 			else
 				Insert(ReinsertList[i]);
 		}
-
-		
 	}
 
 	Octree* GetTopNode() 
@@ -174,6 +169,22 @@ public:
 	void Draw()
 	{
 		BoundingBox.Draw();
+	}
+
+	bool HasZeroElements() {
+		bool Ret = true;
+		if (m_IsLeafNode && Data.size() == 0)
+			return true;
+		if (m_IsLeafNode)
+			return false;
+		else {
+			for (i32 i = 0; i < 8; i++) {
+				if (!m_Children[i]->HasZeroElements())
+					Ret = false;
+			}
+		}
+
+		return Ret;
 	}
 };
 }
