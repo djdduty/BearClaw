@@ -118,10 +118,10 @@ public:
     bool GetEnabled();
     SceneNode* GetParent();
     virtual Scene* GetScene();
-    inline Vec3 GetPosition()	{ return m_Position;	}
-    inline Vec3 GetRotation()	{ return m_Rotation;	}
-    inline uid GetID()			{ return m_Id;			}
-    inline Mat4 GetTransform()	{ return m_Transform;	}
+    inline Vec3 GetPosition()           { return m_Position;	}
+    inline Vec3 GetRotation()           { return m_Rotation;	}
+    inline uid GetID()                  { return m_Id;			}
+    inline Mat4 GetTransform()          { return m_Transform;	}
 	inline AABoundingBox* GetAABB()		{ return m_BoundingBox; }
 	inline bool GetModified()			{ return m_Modified;	}
 	//

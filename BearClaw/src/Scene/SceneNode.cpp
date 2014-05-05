@@ -217,9 +217,11 @@ void SceneNode::Update(f64 DeltaTime)
 		m_Transform.Translate(m_Position);
 		m_TransNeedsUpdate = false;
 	}
+    #ifdef DEBUG_DRAW_ENABLED
+        m_BoundingBox->Draw();
+    #endif
 
-	m_BoundingBox->Draw();
-	OnUpdate(DeltaTime);
+    OnUpdate(DeltaTime);
 }
 
 bool SceneNode::IsScene()

@@ -1,6 +1,8 @@
 #ifndef AABOUNDINGBOX_H
 #define AABOUNDINGBOX_H
 
+//#define DEBUG_DRAW_ENABLED
+
 #include <stdlib.h>
 #include <Utils/Math/Vec3.h>
 #include <Resource/Mesh.h>
@@ -19,10 +21,13 @@ public:
 	{
         HalfDim = Vec3(fabs(Max.x - Min.x) / 2, fabs(Max.y - Min.y) / 2, fabs(Max.z - Min.z) / 2);
 		Origin = (Max - HalfDim) -= Pos;
-		SetupVBO();
+
+        #ifdef DEBUG_DRAW_ENABLED
+            SetupVBO();
+        #endif
 	}
 
-	AABoundingBox(Vec3 Position, VertexList Verts) : Origin(Position)
+    AABoundingBox(Vec3 Position, VertexList Verts) : Origin(Position), m_VboSet(false)
 	{
 		float MaxX, MaxY, MaxZ, MinX, MinY, MinZ;
 		MaxX = MaxY = MaxZ = MinX = MinY = MinZ = 0;
@@ -38,11 +43,15 @@ public:
 		}
 
         HalfDim = Vec3(fabs(MaxX - MinX) / 2, fabs(MaxX - MinX) / 2, fabs(MaxX - MinX) / 2);
-		SetupVBO();
+        #ifdef DEBUG_DRAW_ENABLED
+            SetupVBO();
+        #endif
 	}
 
-	AABoundingBox(Vec3 Position, Vec3 HalfDimensions) : Origin(Position), HalfDim(HalfDimensions) {
-		SetupVBO();
+    AABoundingBox(Vec3 Position, Vec3 HalfDimensions) : Origin(Position), HalfDim(HalfDimensions), m_VboSet(false) {
+        #ifdef DEBUG_DRAW_ENABLED
+            SetupVBO();
+        #endif
 	}
 
 	~AABoundingBox() {
@@ -94,6 +103,7 @@ public:
 
 	void Draw() 
 	{
+        #ifdef DEBUG_DRAW_ENABLED
 		if (m_VboSet) {
 			Mat4 t = Mat4(Origin);
 			m_Material->Bind();
@@ -101,12 +111,13 @@ public:
 			m_Mesh->Render();
 			m_Material->UnBind();
 		}
+        #endif
 	}
 
 	Material* m_Material;
+    bool m_VboSet = false;
 private:
-	Mesh* m_Mesh;
-	bool m_VboSet;
+    Mesh* m_Mesh;
 
 	Vec3 GetMin() { return Origin - HalfDim; }
 	Vec3 GetMax() { return Origin + HalfDim; }
@@ -114,6 +125,7 @@ private:
 protected:
 	void SetupVBO() 
 	{
+        #ifdef DEBUG_DRAW_ENABLED
 		m_Material = new Material();
 		m_Mesh = new Mesh();
 
@@ -157,6 +169,7 @@ protected:
 		m_Mesh->LoadMesh(VertsList, Indices);
 		m_Mesh->SetDebug(true);
         m_VboSet = true;
+        #endif
 	}
 };
 }

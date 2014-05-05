@@ -34,9 +34,9 @@ void MainState::Init(StateManager* Manager)
     m_CamNode->Translate(Vec3(0,0,1));
 
 	i32 num = 0;
-	for (i32 i = 0; i < 6; i++) {
-		for (i32 y = 0; y < 6; y++) {
-            for (i32 z = 0; z < 6; z++) {
+    for (i32 i = 0; i < 100; i++) {
+        for (i32 y = 0; y < 1; y++) {
+            for (i32 z = 0; z < 1; z++) {
                 Vec3 Pos = Vec3(rand() %12-6, rand() %12-6, rand() %12-6);
 				ostringstream ss;
 				ss << num++;
@@ -44,7 +44,7 @@ void MainState::Init(StateManager* Manager)
 				m_Scene->AddChild(Node);
 				TestRenderComponent* tc = new TestRenderComponent("RenderNode-RenderComp" + ss.str());
                 tc->GetMaterial()->SetDiffuseTex("Data/Textures/checker.png");
-				Node->AddComponent(tc);
+                Node->AddComponent(tc);
 				Node->Translate(Pos*0.9);
 			}
 		}
@@ -118,7 +118,7 @@ void MainState::Update(f64 DeltaTime)
 	}
 
 	if (Changed)
-		m_CamNode->Translate(Delta);
+        m_CamNode->Translate(Delta);
 }
 
 void MainState::OnMouseMove(double x, double y) {

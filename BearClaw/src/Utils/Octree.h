@@ -20,7 +20,7 @@ public:
 	AABoundingBox BoundingBox;
 	std::vector<SceneNode*> Data;
 	
-    Octree(Vec3 Origin, Vec3 HalfDim, Octree* Parent = nullptr, bool HasParent = false, i32 MaxObj = 6, i32 MinObj = 1) : BoundingBox(Origin, HalfDim)
+    Octree(Vec3 Origin, Vec3 HalfDim, Octree* Parent = nullptr, bool HasParent = false, i32 MaxObj = 3, i32 MinObj = 1) : BoundingBox(Origin, HalfDim)
 	{
 		m_MaxObjectsPerNode = MaxObj;
 		m_MinObjectsPerNode = MinObj;
@@ -64,14 +64,14 @@ public:
 
 		if (m_IsLeafNode) {
 			Data.push_back(Node);
-            BC_LOG("Node %s inserted...\n", Node->GetName().c_str());
+            //BC_LOG("Node %s inserted...\n", Node->GetName().c_str());
 			return true;
 		}
 
 		i32 i = OctantContainingPoint(Node->GetAABB()->Origin);
         if (m_Children[i]->Insert(Node) == false) {
 			Data.push_back(Node);
-            BC_LOG("Node %s inserted...\n", Node->GetName().c_str());
+            //BC_LOG("Node %s inserted...\n", Node->GetName().c_str());
         }
 		return true;
 	}
@@ -133,7 +133,10 @@ public:
 					//BC_LOG("Child node updating\n");
 				}
 
-		Draw();
+        #ifdef DEBUG_DRAW_ENABLED
+            Draw();
+        #endif
+
 		if (m_HasParent && HasZeroElements()) {
 			m_Parent->Merge();
 			return;
@@ -145,7 +148,7 @@ public:
                 Data[i]->ResolveModification();
                 ReinsertList.push_back(Data[i]);
                 Data.erase(Data.begin() + i);
-                BC_LOG("Node %s moved...\n", Data[i]->GetName().c_str());
+                //BC_LOG("Node %s moved...\n", Data[i]->GetName().c_str());
 			}
 		}
 

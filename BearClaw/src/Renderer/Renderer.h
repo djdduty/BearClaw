@@ -27,9 +27,6 @@ protected:
     bool                m_SceneHasBeenSet;
 
 public:
-    FontString*         Test1;
-    FontString*         Test2;
-
     Renderer(RendererInitializer Initializer);
     ~Renderer();
     virtual void Render();
@@ -61,6 +58,8 @@ public:
     {
         m_Settings.SetValue(Name, Value);
     }
+
+    bool DebugDrawEnabled() { return true; }
 };
 }
 
