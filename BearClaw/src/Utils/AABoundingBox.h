@@ -17,7 +17,7 @@ public:
 
 	AABoundingBox(Vec3 Min, Vec3 Max, Vec3 Pos) : m_VboSet(false)
 	{
-        HalfDim = Vec3(fabs(Max.x - Min.x) / 2.0f, fabs(Max.y - Min.y) / 2.0f, fabs(Max.z - Min.z) / 2.0f);
+		HalfDim = Vec3(abs(Max.x - Min.x) / 2, abs(Max.y - Min.y) / 2, abs(Max.z - Min.z) / 2);
 		Origin = (Max - HalfDim) -= Pos;
 		SetupVBO();
 	}
@@ -37,7 +37,7 @@ public:
 			if (Pos.z < MinZ) MinZ = Pos.z;
 		}
 
-        HalfDim = Vec3(fabs(MaxX - MinX) / 2, fabs(MaxX - MinX) / 2, fabs(MaxX - MinX) / 2);
+		HalfDim = Vec3(abs(MaxX - MinX) / 2, abs(MaxX - MinX) / 2, abs(MaxX - MinX) / 2);
 		SetupVBO();
 	}
 
@@ -76,18 +76,18 @@ public:
 
 	bool Intersects(const AABoundingBox &Other)
 	{
-        if (fabs(Origin.x - Other.Origin.x) >= (HalfDim.x + Other.HalfDim.x)) return false;
-        if (fabs(Origin.y - Other.Origin.y) >= (HalfDim.y + Other.HalfDim.y)) return false;
-        if (fabs(Origin.z - Other.Origin.z) >= (HalfDim.z + Other.HalfDim.z)) return false;
+		if (abs(Origin.x - Other.Origin.x) >= (HalfDim.x + Other.HalfDim.x)) return false;
+		if (abs(Origin.y - Other.Origin.y) >= (HalfDim.y + Other.HalfDim.y)) return false;
+		if (abs(Origin.z - Other.Origin.z) >= (HalfDim.z + Other.HalfDim.z)) return false;
 
 		return true;
 	}
 
 	bool Intersects(AABoundingBox* Other)
 	{
-        if (fabs(Origin.x - Other->Origin.x) >= (HalfDim.x + Other->HalfDim.x)) return false;
-        if (fabs(Origin.y - Other->Origin.y) >= (HalfDim.y + Other->HalfDim.y)) return false;
-        if (fabs(Origin.z - Other->Origin.z) >= (HalfDim.z + Other->HalfDim.z)) return false;
+		if (abs(Origin.x - Other->Origin.x) >= (HalfDim.x + Other->HalfDim.x)) return false;
+		if (abs(Origin.y - Other->Origin.y) >= (HalfDim.y + Other->HalfDim.y)) return false;
+		if (abs(Origin.z - Other->Origin.z) >= (HalfDim.z + Other->HalfDim.z)) return false;
 
 		return true;
 	}
@@ -100,8 +100,7 @@ public:
 			m_Material->PrepareForRender(t);
 			m_Mesh->Render();
 			m_Material->UnBind();
-            return;
-        }
+		}
 	}
 
 	Material* m_Material;
@@ -156,8 +155,7 @@ protected:
 		Indices.push_back(3); Indices.push_back(7);
 
 		m_Mesh->LoadMesh(VertsList, Indices);
-        m_Mesh->SetDebug(true);
-        m_VboSet = true;
+		m_Mesh->SetDebug(true);
 	}
 };
 }

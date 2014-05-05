@@ -34,16 +34,16 @@ void MainState::Init(StateManager* Manager)
     m_CamNode->Translate(Vec3(0,0,1));
 
 	i32 num = 0;
-    for (i32 i = 0; i < 6; i++) {
-        for (i32 y = 0; y < 6; y++) {
-            for (i32 z = 0; z < 1; z++) {
-                Vec3 Pos = Vec3(i+0.7, y+0.7, z+1);
+	for (i32 i = 0; i < 6; i++) {
+		for (i32 y = 0; y < 6; y++) {
+			for (i32 z = 0; z < 1; z++) {
+				Vec3 Pos = Vec3(i + 0.7, y+0.5, z + 1);
 				ostringstream ss;
 				ss << num++;
 				SceneNode* Node = new SceneNode("RenderNode" + ss.str());
 				m_Scene->AddChild(Node);
 				TestRenderComponent* tc = new TestRenderComponent("RenderNode-RenderComp" + ss.str());
-                tc->GetMaterial()->SetDiffuseTex("Data/Textures/checker.png");
+				tc->GetMaterial()->SetDiffuseTex("Data/Textures/Checker.png");
 				Node->AddComponent(tc);
 				Node->Translate(Pos*0.9);
 			}
@@ -122,11 +122,11 @@ void MainState::Update(f64 DeltaTime)
 
 	f64 Time = BCGetTimeInMS();
 	std::vector<SceneNode*> Nodes;
-	m_Scene->GetOctree()->GetNodesNearPosition(Vec3(0, 0, 0), Nodes, true);
+	m_Scene->GetOctree()->GetNodesNearPosition(Vec3(4.7*0.9, 0.5, 0), Nodes, 3);
 	for (i32 i = 0; i < Nodes.size(); i++) {
 		Nodes[i]->GetAABB()->m_Material->SetDiffuseColor(Vec4(0, 1, 0, 1));
 	}
-	//BC_LOG("Time %f\n", BCGetTimeInMS() - Time);
+	BC_LOG("Time %f\n", BCGetTimeInMS() - Time);
 }
 
 void MainState::OnMouseMove(double x, double y) {
