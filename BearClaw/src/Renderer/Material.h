@@ -82,7 +82,7 @@ public:
     void Bind();
     void Update();
     void UpdateShader();
-	void PrepareForRender(Mat4 AlternateTrans = Mat4(1.0f));
+    void PrepareForRender(Mat4 AlternateTrans = Mat4(1.0f));
     HLShaderWrapper* GetShader();
 
     void Save(string Path);

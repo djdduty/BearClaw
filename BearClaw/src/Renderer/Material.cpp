@@ -131,11 +131,11 @@ void Material::PrepareForRender(Mat4 AlternateTrans)
 
     if(!m_UseFontShader)
     {
-		Mat4 Model;
+        Mat4 Model;
 		if (m_HasOwner)
-			Model = m_Owner->GetTransform();
-		else
-			Model = AlternateTrans;
+            Model = m_Owner->GetTransform();
+        else
+            Model = AlternateTrans;
 
         Mat4 View = RenderSingleton->GetRenderScene()->GetActiveCamera()->GetTransform();
 

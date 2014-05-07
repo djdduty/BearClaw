@@ -24,9 +24,9 @@ void TestRenderComponent::OnInit()
 void TestRenderComponent::InitRenderNode()
 {
 	VertexList Verts = VertexList();
-	Verts = GetSphereVerts(0.2, 32, 64);
+    Verts = GetSphereVerts(0.2, 16, 32);
 	IndexList Indices = IndexList();
-	Indices = GetSphereIndices(32, 64);
+    Indices = GetSphereIndices(16, 32);
 
     M->LoadMesh(Verts, Indices);
 	m_Owner->SetAABB(Verts);

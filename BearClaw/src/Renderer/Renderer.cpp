@@ -127,9 +127,9 @@ void Renderer::Render()
 			if (it->second->IsVisible())
 			{
 				if (!it->second->pRenderLast && !it->second->GetMaterial()->GetUseFontShader()) {
-					it->second->PreRender();
+                    it->second->PreRender();
 					it->second->Render();
-					it->second->PostRender();
+                    it->second->PostRender();
 				} else {
 					if (it->second->GetMaterial()->GetUseFontShader()) TwoDList.push_back(it->second);
 					else AfterList.push_back(it->second);
