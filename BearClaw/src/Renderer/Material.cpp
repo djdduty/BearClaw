@@ -110,17 +110,17 @@ void Material::UpdateShader()
         m_ProjectionMatrixLoc = m_Shader->GetUniformLocation("ProjectionMatrix");
         m_NormalMatrixLoc = m_Shader->GetUniformLocation("NormalMatrix");
 
-        m_DiffuseMapLoc = m_Shader->GetUniformLocation("DiffuseMap");
-
         m_UseNormalMapLoc = m_Shader->GetUniformLocation("UseNormalMap");
 		m_NormalMapLoc = m_Shader->GetUniformLocation("NormalMap");
 
 		m_UseSpecularLoc = m_Shader->GetUniformLocation("UseSpecular");
 		m_SpecularLoc = m_Shader->GetUniformLocation("SpecularPower");
+
+		m_UVMultLoc = m_Shader->GetUniformLocation("UVAdd");
+		m_UseDiffuseMapLoc = m_Shader->GetUniformLocation("UseDiffuseMap");
 	}
 
-	m_UVMultLoc = m_Shader->GetUniformLocation("UVAdd");
-    m_UseDiffuseMapLoc = m_Shader->GetUniformLocation("UseDiffuseMap");
+	m_DiffuseMapLoc = m_Shader->GetUniformLocation("DiffuseMap");
     m_DiffuseColorLoc = m_Shader->GetUniformLocation("DiffuseColor");
 }
 
