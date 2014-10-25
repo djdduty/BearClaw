@@ -34,5 +34,4 @@ int main()
     GameApp* Game = new GameApp(new MainState());
     Game->Start();
 	delete(Game);
-	exit(0);
 }
