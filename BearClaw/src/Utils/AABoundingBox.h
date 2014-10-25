@@ -15,7 +15,7 @@ public:
 	Vec3 HalfDim;
 	Vec3 Origin;
 
-	AABoundingBox() : HalfDim(Vec3()), Origin(Vec3()), m_VboSet(false) {}
+    AABoundingBox() : HalfDim(Vec3()), Origin(Vec3()), m_VboSet(false) {}
 
 	AABoundingBox(Vec3 Min, Vec3 Max, Vec3 Pos) : m_VboSet(false)
 	{
@@ -115,7 +115,7 @@ public:
 	}
 
 	Material* m_Material;
-    bool m_VboSet = false;
+    bool m_VboSet;
 private:
     Mesh* m_Mesh;
 

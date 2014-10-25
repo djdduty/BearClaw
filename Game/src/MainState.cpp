@@ -72,7 +72,7 @@ void MainState::DeInit()
 
 void MainState::OnActivate()
 {
-    BC_LOG("Main state being activated\n");
+    BC_LOG("Main state being activated!\n");
 }
 
 void MainState::OnDeactivate()
